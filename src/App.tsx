@@ -3,6 +3,7 @@ import './App.css';
 import WMButton from './component/utility/WMButton';
 import WMDotSelector from './component/utility/WMDotSelector';
 import Axiom from './model/Axiom';
+import Quirk from './model/Quirk';
 
 function App() {
   // Wonder name and description state
@@ -40,8 +41,7 @@ function App() {
   function renderSelectFlavor() {
     const flavors = selectedAxiomDraft.getFlavors(selectedRankDraft);
 
-    if (flavors.length < 2)
-    {
+    if (flavors.length < 2) {
       return <div className="h2 mb3 flex items-center">{flavors[0]}</div>;
     }
 
@@ -54,6 +54,91 @@ function App() {
         <option key={i} value={val}>{val}</option>
       )}
     </select>
+  }
+
+  // Wonder quirks
+  const [selectedQuirks, setSelectedQuirks] = useState(new Set<Quirk>());
+  const [selectedQuirkOptions, setSelectedQuirkOptions] = useState(new Map<string, string>());
+
+  // Initialize universal quirk option groups to default option IDs
+  useEffect(() => {
+    Quirk.UNIVERSAL_QUIRKS.forEach(quirk => {
+      quirk.optionGroups?.forEach(group => {
+        selectedQuirkOptions.set(group.id, group.defaultOptionID);
+      });
+    });
+  }, []);
+
+  function renderUsageModifier(usageModifier: number): React.ReactNode {
+    let usageModifierString = "";
+    if (usageModifier === 0) {
+      usageModifierString = "+0";
+    } else if (usageModifier < 0) {
+      usageModifierString = usageModifier.toString();
+    } else {
+      usageModifierString = `+${usageModifier}`;
+    }
+
+    return <span className="tracked">{usageModifierString}</span>
+  }
+
+  function displayCalculatedUsageModifier() {
+    let usageModifier = 0;
+    selectedQuirks.forEach(quirk => {
+      usageModifier += quirk.getUsageModifier(selectedQuirkOptions);
+    });
+    return usageModifier;
+  }
+
+  function renderQuirkControl(quirk: Quirk) {
+    const usageModifier = renderUsageModifier(quirk.getUsageModifier());
+
+    return <div key={quirk.id}>
+      <div className="flex items-center mb2">
+        <input className="w1 mr2"
+          type="checkbox"
+          id={quirk.id}
+          defaultChecked={selectedQuirks.has(quirk)}
+          onChange={(e) => {
+            const newSelectedQuirks = new Set(selectedQuirks);
+
+            if (e.target.checked) {
+              newSelectedQuirks.add(quirk);
+            } else {
+              newSelectedQuirks.delete(quirk);
+            }
+
+            setSelectedQuirks(newSelectedQuirks);
+          }}
+        />
+        <label htmlFor={quirk.id} className="lh-copy">{quirk.displayName} ({usageModifier})</label>
+      </div>
+
+      {selectedQuirks.has(quirk) && quirk.optionGroups?.map((optionGroup, i) => {
+        return <div key={i} className="ml2 bl b--near-black">
+          {optionGroup.quirkOptions.map((option, j) => {
+            const inputID = `${quirk.id}-${i}-${j}`;
+            const optionUsageModifier = renderUsageModifier(option.usageModifier);
+
+            return <div className="flex items-center mb2 ml2" key={j}>
+              <input className="mr2"
+                type="radio"
+                id={inputID}
+                name={`${quirk.id}-${i}`}
+                value={option.id}
+                checked={selectedQuirkOptions.get(optionGroup.id) === option.id}
+                onChange={(e) => {
+                  const newSelectedQuirkOptions = new Map(selectedQuirkOptions);
+                  newSelectedQuirkOptions.set(optionGroup.id, option.id);
+                  setSelectedQuirkOptions(newSelectedQuirkOptions);
+                }}
+              />
+              <label htmlFor={inputID} className="lh-copy">{option.displayName} ({optionUsageModifier})</label>
+            </div>
+          })}
+        </div>
+      })}
+    </div>
   }
 
   return (
@@ -114,7 +199,8 @@ function App() {
           }}>Save</WMButton>
 
           <h2>3. Quirks</h2>
-          <p>Some crap...</p>
+          <p><label className="b">Modifier: {renderUsageModifier(displayCalculatedUsageModifier())}</label></p>
+          {Quirk.UNIVERSAL_QUIRKS.map(quirk => renderQuirkControl(quirk))}
           <WMButton>Save</WMButton>
 
         </div>
@@ -122,7 +208,7 @@ function App() {
         <div className="ml2 pa2 bg-near-white mw7 shadow-1 flex-grow-1">
           <h2>{wonderName.length > 0 ? wonderName : <em>My Wonder</em>}</h2>
           <p>{wonderDescription.length > 0 ? wonderDescription : <em>All about my wonder...</em>}</p>
-          <p>{selectedAxiom?.displayName} {selectedRank} {selectedFlavor}</p>
+          <h3>{selectedAxiom?.displayName} {selectedRank} {selectedFlavor}</h3>
         </div>
       </div>
     </div>

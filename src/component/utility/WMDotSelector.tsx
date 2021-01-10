@@ -31,7 +31,7 @@ export default function WMDotSelector(props: DotSelectorProps) {
         const consti = i;
         const filled = i <= (hovering ? hoverCount : props.value);
 
-        dots[i] = <div className="dib pointer w1"
+        dots[i] = <div className="dib pointer w1" key={i}
             onClick={() => dotClick(consti)}
             onMouseEnter={() => enter(consti)}
             onMouseLeave={() => exit(consti)}
