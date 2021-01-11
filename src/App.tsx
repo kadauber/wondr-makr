@@ -59,13 +59,29 @@ function App() {
   // Wonder quirks
   const [selectedQuirks, setSelectedQuirks] = useState(new Set<Quirk>());
   const [selectedQuirkOptions, setSelectedQuirkOptions] = useState(new Map<string, string>());
+  const [quirkCustomNumberInputValues, setQuirkCustomNumberInputValues] = useState(new Map<string, number>());
+  const [quirkCustomStringInputValues, setQuirkCustomStringInputValues] = useState(new Map<string, string>());
 
-  // Initialize universal quirk option groups to default option IDs
+  // Initialize universal quirk settings to defaults
   useEffect(() => {
     Quirk.UNIVERSAL_QUIRKS.forEach(quirk => {
+      const newSelectedQuirkOptions = new Map<string, string>();
       quirk.optionGroups?.forEach(group => {
-        selectedQuirkOptions.set(group.id, group.defaultOptionID);
+        newSelectedQuirkOptions.set(group.id, group.defaultOptionID);
       });
+      setSelectedQuirkOptions(newSelectedQuirkOptions);
+
+      const newQuirkCustomNumberInputValues = new Map<string, number>();
+      if (quirk.customNumberInput !== undefined) {
+        newQuirkCustomNumberInputValues.set(quirk.customNumberInput.id, quirk.customNumberInput.defaultValue);
+      }
+      setQuirkCustomNumberInputValues(newQuirkCustomNumberInputValues);
+
+      const newQuirkCustomStringInputValues = new Map<string, string>();
+      if (quirk.customStringInput !== undefined) {
+        newQuirkCustomStringInputValues.set(quirk.customStringInput.id, quirk.customStringInput.defaultValue);
+      }
+      setQuirkCustomStringInputValues(newQuirkCustomStringInputValues);
     });
   }, []);
 
@@ -85,13 +101,29 @@ function App() {
   function displayCalculatedUsageModifier() {
     let usageModifier = 0;
     selectedQuirks.forEach(quirk => {
-      usageModifier += quirk.getUsageModifier(selectedQuirkOptions);
+      let additionalModifier = 0;
+      
+      if (quirk.id === Quirk.MANIA_COST.id && quirk.customNumberInput !== undefined) {
+        const maniaCostMod = quirkCustomNumberInputValues.get(quirk.customNumberInput?.id);
+        if (maniaCostMod !== undefined) {
+          additionalModifier = maniaCostMod;
+        }
+      }
+
+      if (quirk.id === Quirk.RESILIENT.id && quirk.customNumberInput !== undefined) {
+        const resilientRanks = quirkCustomNumberInputValues.get(quirk.customNumberInput?.id);
+        if (resilientRanks !== undefined) {
+          additionalModifier = -1 * resilientRanks;
+        }
+      }
+
+      usageModifier += quirk.getUsageModifier(selectedQuirkOptions, additionalModifier);
     });
     return usageModifier;
   }
 
   function renderQuirkControl(quirk: Quirk) {
-    const usageModifier = renderUsageModifier(quirk.getUsageModifier());
+    const usageModifier = renderUsageModifier(quirk.baseUsageModifier);
 
     return <div key={quirk.id}>
       <div className="flex items-center mb2">
@@ -113,6 +145,23 @@ function App() {
         />
         <label htmlFor={quirk.id} className="lh-copy">{quirk.displayName} ({usageModifier})</label>
       </div>
+
+      {selectedQuirks.has(quirk) && quirk.customNumberInput !== undefined && <div className="ml2 mb2 bl b--near-black">
+        <label className="ml2">
+          {quirk.customNumberInput.label}
+          <input type="number"
+            className="ml1"
+            value={quirkCustomNumberInputValues.get(quirk.customNumberInput.id)}
+            onChange={(e) => {
+              const inputID = quirk.customNumberInput?.id;
+              if (inputID !== undefined) {
+                const newQuirkCustomNumberInputValues = new Map(quirkCustomNumberInputValues);
+                newQuirkCustomNumberInputValues.set(inputID, parseInt(e.target.value));
+                setQuirkCustomNumberInputValues(newQuirkCustomNumberInputValues);
+              }
+            }} />
+        </label>
+      </div>}
 
       {selectedQuirks.has(quirk) && quirk.optionGroups?.map((optionGroup, i) => {
         return <div key={i} className="ml2 bl b--near-black">
@@ -199,7 +248,8 @@ function App() {
           }}>Save</WMButton>
 
           <h2>3. Quirks</h2>
-          <p><label className="b">Modifier: {renderUsageModifier(displayCalculatedUsageModifier())}</label></p>
+          <p><label className="b">Core Modifier: {renderUsageModifier(displayCalculatedUsageModifier())}</label></p>
+          <h3>Universal Quirks</h3>
           {Quirk.UNIVERSAL_QUIRKS.map(quirk => renderQuirkControl(quirk))}
           <WMButton>Save</WMButton>
 
