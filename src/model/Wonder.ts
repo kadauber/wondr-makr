@@ -1,5 +1,5 @@
 import Axiom from "./Axiom";
-import Quirk from "./Quirk";
+import QuirkTemplate from "./QuirkTemplate";
 
 class Wonder {
     public readonly wonderName: string;
@@ -7,9 +7,9 @@ class Wonder {
     public readonly axiom?: Axiom;
     public readonly rank?: number;
     public readonly flavor?: string;
-    public readonly quirks?: Set<Quirk>;
+    public readonly quirks?: Set<QuirkTemplate>;
 
-    private constructor(wonderName: string, description: string, axiom?: Axiom, rank?: number, flavor?: string, quirks?: Set<Quirk>) {
+    private constructor(wonderName: string, description: string, axiom?: Axiom, rank?: number, flavor?: string, quirks?: Set<QuirkTemplate>) {
         this.wonderName = wonderName;
         this.description = description;
         this.axiom = axiom;
@@ -41,7 +41,7 @@ class Wonder {
      * Create a new Wonder with updated quirks.
      * @param newQuirks 
      */
-    public updateQuirks(newQuirks: Set<Quirk>): Wonder {
+    public updateQuirks(newQuirks: Set<QuirkTemplate>): Wonder {
         return new Wonder(this.wonderName, this.description, this.axiom, this.rank, this.flavor, newQuirks);
     }
 }
