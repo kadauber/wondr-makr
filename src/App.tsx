@@ -18,27 +18,29 @@ function App() {
   const [selectedQuirkTemplates, setSelectedQuirkTemplates] = useState(new Set<QuirkTemplate>());
   // Map from template ID to (map from option group ID to option ID)
   const [selectedQuirkOptions, setSelectedQuirkOptions] = useState(new Map<string, Map<string, string>>());
-  const [quirkCustomNumberInputValues, setQuirkCustomNumberInputValues] = useState(new Map<string, number>());
-  const [quirkCustomStringInputValues, setQuirkCustomStringInputValues] = useState(new Map<string, string>());
+  // Map from template ID to (map from number input ID to value)
+  const [quirkCustomNumberInputValues, setQuirkCustomNumberInputValues] = useState(new Map<string, Map<string, number>>());
 
   // Initialize universal quirk settings to defaults
   useEffect(() => {
     const newSelectedQuirkOptions = new Map<string, Map<string, string>>();
+    const newQuirkCustomNumberInputValues = new Map<string, Map<string, number>>();
 
     QuirkTemplate.UNIVERSAL_QUIRK_TEMPLATES.forEach(quirkTemplate => {
       const quirkTemplateOptions = new Map<string, string>();
 
+      // Initialize option groups to default values
       quirkTemplate.optionGroups?.forEach(group => {
         quirkTemplateOptions.set(group.id, group.defaultOptionID);
       });
-
       newSelectedQuirkOptions.set(quirkTemplate.id, quirkTemplateOptions);
 
-      // const newQuirkCustomNumberInputValues = new Map<string, number>();
-      // if (quirk.customNumberInputs !== undefined) {
-      //   newQuirkCustomNumberInputValues.set(quirk.customNumberInputs.id, quirk.customNumberInputs.defaultValue);
-      // }
-      // setQuirkCustomNumberInputValues(newQuirkCustomNumberInputValues);
+      // Initialize number inputs to default values
+      const numberInputValues = new Map<string, number>();
+      quirkTemplate.customNumberInputs?.forEach((numberInput) => {
+        numberInputValues.set(numberInput.id, numberInput.defaultValue);
+      });
+      newQuirkCustomNumberInputValues.set(quirkTemplate.id, numberInputValues);
 
       // const newQuirkCustomStringInputValues = new Map<string, string>();
       // if (quirk.customStringInputs !== undefined) {
@@ -48,6 +50,7 @@ function App() {
     });
 
     setSelectedQuirkOptions(newSelectedQuirkOptions);
+    setQuirkCustomNumberInputValues(newQuirkCustomNumberInputValues);
   }, []);
 
   function displayCalculatedUsageModifier() {
@@ -84,7 +87,8 @@ function App() {
   }
 
   function renderQuirkInput(quirkTemplate: QuirkTemplate) {
-    return <WonderQuirkInput quirkTemplate={quirkTemplate}
+    return <WonderQuirkInput key={quirkTemplate.id}
+      quirkTemplate={quirkTemplate}
       isChecked={selectedQuirkTemplates.has(quirkTemplate)}
       onIsCheckedChanged={(isChecked: boolean) => {
         const newSelectedQuirkTemplates = new Set(selectedQuirkTemplates);
@@ -107,6 +111,16 @@ function App() {
 
         setSelectedQuirkOptions(newSelectedQuirkOptions);
       })}
+      customNumberInputValues={quirkCustomNumberInputValues.get(quirkTemplate.id)}
+      onCustomNumberInputValuesChanged={(inputID: string, value: number) => {
+        // Copy the entire map templateID => { numberInputID => value }}
+        const newNumberInputValues = new Map(quirkCustomNumberInputValues);
+
+        // Update the template's map { optionGroupID => optionID }
+        newNumberInputValues.get(quirkTemplate.id)?.set(inputID, value);
+
+        setQuirkCustomNumberInputValues(newNumberInputValues);
+      }}
     />
   }
 

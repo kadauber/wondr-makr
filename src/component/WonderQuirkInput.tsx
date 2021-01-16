@@ -1,41 +1,47 @@
 import React, { useState } from 'react';
-import QuirkTemplate from '../model/QuirkTemplate';
+import QuirkTemplate, { QuirkTemplateCustomNumberInput } from '../model/QuirkTemplate';
 import Utils from '../Utils';
 
 interface WonderQuirkInputProps {
   quirkTemplate: QuirkTemplate;
+
   isChecked: boolean;
   onIsCheckedChanged: (isChecked: boolean) => void;
+
   optionSelections?: Map<string, string>;
   onSelectOption: (optionGroupID: string, optionID: string) => void;
+
+  customNumberInputValues?: Map<string, number>;
+  onCustomNumberInputValuesChanged: (inputID: string, value: number) => void;
 }
 
 function WonderQuirkInput(props: WonderQuirkInputProps) {
-  const [customNumberInputValue, setCustomNumberInputValue] = useState(0);
-  const [customStringInputValue, setCustomStringInputValue] = useState("");
-
   const usageModifier = Utils.renderUsageModifier(props.quirkTemplate.baseUsageModifier);
 
-  // function renderCustomNumberInput(id: string, label: string) {
-  //   return <div className="ml2 mb2 bl b--near-black">
-  //     <label className="ml2">
-  //       {label}
-  //       <input type="number"
-  //         className="ml1"
-  //         value={customNumberInputValue}
-  //         // value={quirkCustomNumberInputValues.get(quirk.customNumberInput.id)}
-  //         onChange={(e) => {
-  //           const inputID = quirk.customNumberInput?.id;
-  //           if (inputID !== undefined) {
-  //             const newQuirkCustomNumberInputValues = new Map(quirkCustomNumberInputValues);
-  //             newQuirkCustomNumberInputValues.set(inputID, parseInt(e.target.value));
-  //             setQuirkCustomNumberInputValues(newQuirkCustomNumberInputValues);
-  //           }
-  //         }}
-  //       />
-  //     </label>
-  //   </div>
-  // }
+  function renderNumberInput(numberInput: QuirkTemplateCustomNumberInput) {
+    return <div className="ml2 mb2 bl b--near-black" key={numberInput.id}>
+      <label className="ml2">
+        {numberInput.label}
+        <input type="number"
+          className="ml1"
+          value={props.customNumberInputValues?.get(numberInput.id)}
+          onChange={(e) => {
+            props.onCustomNumberInputValuesChanged(numberInput.id, parseInt(e.target.value));
+          }}
+        />
+      </label>
+    </div>
+  }
+
+  function renderCustomNumberInputs() {
+    if (props.quirkTemplate.customNumberInputs === undefined) {
+      return "";
+    }
+
+    return props.quirkTemplate.customNumberInputs.map((numberInput) => {
+      return renderNumberInput(numberInput);
+    });
+  }
 
   // function renderCustomStringInput() {
   //   <div className="ml2 mb2 bl b--near-black">
@@ -69,9 +75,9 @@ function WonderQuirkInput(props: WonderQuirkInputProps) {
       <label htmlFor={props.quirkTemplate.id} className="lh-copy">{props.quirkTemplate.displayName} ({usageModifier})</label>
     </div>
 
-    {/* {props.isChecked && props.quirkTemplate.customNumberInputs !== undefined && renderCustomNumberInput()}
+    {props.isChecked && props.quirkTemplate.customNumberInputs !== undefined && renderCustomNumberInputs()}
 
-    {props.isChecked && props.quirkTemplate.customStringInputs !== undefined && renderCustomStringInput()} */}
+    {/* {props.isChecked && props.quirkTemplate.customStringInputs !== undefined && renderCustomStringInput()} */}
 
     {props.isChecked && props.quirkTemplate.optionGroups?.map((optionGroup, i) => {
       return <div key={i} className="ml2 bl b--near-black">
@@ -89,12 +95,6 @@ function WonderQuirkInput(props: WonderQuirkInputProps) {
               onChange={(e) => {
                 props.onSelectOption(optionGroup.id, option.id);
               }}
-              // checked={selectedQuirkOptions.get(optionGroup.id) === option.id}
-              // onChange={(e) => {
-              //   const newSelectedQuirkOptions = new Map(selectedQuirkOptions);
-              //   newSelectedQuirkOptions.set(optionGroup.id, option.id);
-              //   setSelectedQuirkOptions(newSelectedQuirkOptions);
-              // }}
             />
             <label htmlFor={inputID} className="lh-copy">{option.displayName} ({optionUsageModifier})</label>
           </div>
