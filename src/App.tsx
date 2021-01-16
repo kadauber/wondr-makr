@@ -102,7 +102,7 @@ function App() {
     let usageModifier = 0;
     selectedQuirks.forEach(quirk => {
       let additionalModifier = 0;
-      
+
       if (quirk.id === Quirk.MANIA_COST.id && quirk.customNumberInput !== undefined) {
         const maniaCostMod = quirkCustomNumberInputValues.get(quirk.customNumberInput?.id);
         if (maniaCostMod !== undefined) {
@@ -195,59 +195,71 @@ function App() {
       <h1>Wondr Makr</h1>
       <div className="flex">
         <div className="pa2 bg-near-white mw7 shadow-1 flex-grow-1">
-          <h2>1. Name and Description</h2>
-          <label htmlFor="wonder-name" className="b db mb2">Name</label>
-          <input id="wonder-name"
-            className="input-reset ba b--black-20 pa2 mb2 db w-100 measure"
-            type="text"
-            value={wonderNameDraft}
-            onChange={(e) => setWonderNameDraft(e.target.value)}
-          />
-          <label htmlFor="wonder-desc" className="b db mb2">Description</label>
-          <textarea id="wonder-desc"
-            className="db border-box hover-black w-100 measure ba b--black-20 pa2 br2 mb2"
-            value={wonderDescriptionDraft}
-            onChange={(e) => setWonderDescriptionDraft(e.target.value)}></textarea>
+          <h2>1. Describe Wonder</h2>
+          <div className="flex flex-column" style={{ gap: "1rem" }}>
+            <div>
+              <label htmlFor="wonder-name" className="b db mb2">Name</label>
+              <input id="wonder-name"
+                className="input-reset ba b--black-20 pa2 mb2 db w-100 measure"
+                type="text"
+                value={wonderNameDraft}
+                onChange={(e) => setWonderNameDraft(e.target.value)}
+              />
+            </div>
 
-          <WMButton onClick={(e) => {
-            setWonderName(wonderNameDraft);
-            setWonderDescription(wonderDescriptionDraft);
-          }}>Save</WMButton>
+            <div className="flex" style={{ gap: "2rem" }}>
+              <div className="">
+                <label htmlFor="wonder-axiom" className="b db mb2">Axiom</label>
+                <select
+                  id="wonder-axiom"
+                  className="db mb3 h2"
+                  onChange={(e) => {
+                    const newAxiom = axioms.find(axiom => axiom.id === e.target.value);
+                    if (newAxiom !== undefined) {
+                      setSelectedAxiomDraft(newAxiom);
+                    }
+                  }}
+                >
+                  {axioms.map((val, i) =>
+                    <option key={i} value={val.id}>{val.displayName}</option>
+                  )}
+                </select>
+              </div>
+              <div className="">
+                <label htmlFor="wonder-rank" className="b db mb2">Rank</label>
+                <WMDotSelector
+                  id="wonder-rank"
+                  className="mb3 h2 flex items-center"
+                  value={selectedRankDraft}
+                  onChange={(rank) => setSelectedRankDraft(rank)}
+                />
+              </div>
+              <div>
+                <label htmlFor="wonder-flavor" className="b db mb2">Flavor</label>
+                {renderSelectFlavor()}
+              </div>
+            </div>
 
-          <h2>2. Axiom, Rank, and Flavor</h2>
-          <label htmlFor="wonder-axiom" className="b db mb2">Axiom</label>
-          <select
-            id="wonder-axiom"
-            className="db mb3 h2"
-            onChange={(e) => {
-              const newAxiom = axioms.find(axiom => axiom.id === e.target.value);
-              if (newAxiom !== undefined) {
-                setSelectedAxiomDraft(newAxiom);
-              }
-            }}
-          >
-            {axioms.map((val, i) =>
-              <option key={i} value={val.id}>{val.displayName}</option>
-            )}
-          </select>
+            <div>
+              <label htmlFor="wonder-desc" className="b db mb2">Description</label>
+              <textarea id="wonder-desc"
+                className="db border-box hover-black w-100 measure ba b--black-20 pa2 br2 mb2"
+                value={wonderDescriptionDraft}
+                onChange={(e) => setWonderDescriptionDraft(e.target.value)}></textarea>
+            </div>
 
-          <label htmlFor="wonder-rank" className="b db mb2">Rank</label>
-          <WMDotSelector
-            id="wonder-rank"
-            className="mb3 h2 flex items-center"
-            value={selectedRankDraft}
-            onChange={(rank) => setSelectedRankDraft(rank)}
-          />
+            <div>
+              <WMButton onClick={(e) => {
+                setWonderName(wonderNameDraft);
+                setWonderDescription(wonderDescriptionDraft);
+                setSelectedAxiom(selectedAxiomDraft);
+                setSelectedRank(selectedRankDraft);
+                setSelectedFlavor(selectedFlavorDraft);
+              }}>Save</WMButton>
+            </div>
+          </div>
 
-          <label htmlFor="wonder-flavor" className="b db mb2">Flavor</label>
-          {renderSelectFlavor()}
-          <WMButton onClick={() => {
-            setSelectedAxiom(selectedAxiomDraft);
-            setSelectedRank(selectedRankDraft);
-            setSelectedFlavor(selectedFlavorDraft);
-          }}>Save</WMButton>
-
-          <h2>3. Quirks</h2>
+          <h2>2. Quirks</h2>
           <p><label className="b">Core Modifier: {renderUsageModifier(displayCalculatedUsageModifier())}</label></p>
           <h3>Universal Quirks</h3>
           {Quirk.UNIVERSAL_QUIRKS.map(quirk => renderQuirkControl(quirk))}
@@ -257,11 +269,11 @@ function App() {
 
         <div className="ml2 pa2 bg-near-white mw7 shadow-1 flex-grow-1">
           <h2>{wonderName.length > 0 ? wonderName : <em>My Wonder</em>}</h2>
-          <p>{wonderDescription.length > 0 ? wonderDescription : <em>All about my wonder...</em>}</p>
           <h3>{selectedAxiom?.displayName} {selectedRank} {selectedFlavor}</h3>
+          <p>{wonderDescription.length > 0 ? wonderDescription : <em>All about my wonder...</em>}</p>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
