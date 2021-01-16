@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import QuirkTemplate, { QuirkTemplateCustomNumberInput } from '../model/QuirkTemplate';
 import Utils from '../Utils';
 
@@ -43,25 +43,6 @@ function WonderQuirkInput(props: WonderQuirkInputProps) {
     });
   }
 
-  // function renderCustomStringInput() {
-  //   <div className="ml2 mb2 bl b--near-black">
-  //     <label className="ml2">
-  //       {quirk.customStringInput.label}
-  //       <input type="text"
-  //         className="ml1"
-  //         value={quirkCustomStringInputValues.get(quirk.customStringInput.id)}
-  //         onChange={(e) => {
-  //           const inputID = quirk.customStringInput?.id;
-  //           if (inputID !== undefined) {
-  //             const newQuirkCustomStringInputValues = new Map(quirkCustomStringInputValues);
-  //             newQuirkCustomStringInputValues.set(inputID, e.target.value);
-  //             setQuirkCustomStringInputValues(newQuirkCustomStringInputValues);
-  //           }
-  //         }} />
-  //     </label>
-  //   </div>
-  // }
-
   return <div key={props.quirkTemplate.id}>
     <div className="flex items-center mb2">
       <input className="w1 mr2"
@@ -76,8 +57,6 @@ function WonderQuirkInput(props: WonderQuirkInputProps) {
     </div>
 
     {props.isChecked && props.quirkTemplate.customNumberInputs !== undefined && renderCustomNumberInputs()}
-
-    {/* {props.isChecked && props.quirkTemplate.customStringInputs !== undefined && renderCustomStringInput()} */}
 
     {props.isChecked && props.quirkTemplate.optionGroups?.map((optionGroup, i) => {
       return <div key={i} className="ml2 bl b--near-black">

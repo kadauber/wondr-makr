@@ -16,12 +16,6 @@ export type QuirkTemplateCustomNumberInput = {
     defaultValue: number;
 }
 
-export type QuirkTemplateCustomStringInput = {
-    id: string;
-    label: string;
-    defaultValue: string;
-}
-
 class QuirkTemplate {
     public static readonly BASILISK_EFFECT = new QuirkTemplate(
         "basilisk",
@@ -205,16 +199,6 @@ class QuirkTemplate {
         0
     );
 
-    public static readonly PECULIAR_REQUIREMENT = new QuirkTemplate(
-        "peculiarrequirement",
-        "Peculiar Requirement",
-        () => `Some wonders have unusual, unique environmental requirements for their operation. A Moon Hook (Skafoi 2) works much like a jet pack, except it "hooks" onto the Moon, so the genius must be able to see the Moon to use it. The Dog Howl Comm (Apokalypsi 1) is useful for transmitting information, but the message is transmitted by the howls of dogs, which means that there must be a direct line-of-dog between the wonder's user and its target (easy in most metropolitan areas, tricky in the mid-Atlantic). Similar peculiar requirements are about as inconvenient as a fault. A narrow selection of acceptable targets is never a peculiar requirement.`,
-        1,
-        undefined,
-        undefined,
-        [{ id: "peculiarrequirementdescription", label: "Describe peculiar requirement:", defaultValue: "" }]
-    );
-
     public static readonly RESILIENT = new QuirkTemplate(
         "resilient",
         "Resilient",
@@ -317,7 +301,6 @@ class QuirkTemplate {
         QuirkTemplate.LIMITED_USES,
         QuirkTemplate.MANIA_COST,
         QuirkTemplate.NORMAL_LOOKING,
-        QuirkTemplate.PECULIAR_REQUIREMENT,
         QuirkTemplate.RESILIENT,
         QuirkTemplate.SLOW_RELOAD
     ];
@@ -328,8 +311,8 @@ class QuirkTemplate {
     public readonly baseUsageModifier: number; // numerical modifier the quirk gives when using the wonder
     // Lists of options the Genius can use to change the quirk's usage modifier.
     public readonly optionGroups?: QuirkTemplateOptionGroup[];
+    // Additional number inputs to modify aspects of the quirk
     public readonly customNumberInputs?: QuirkTemplateCustomNumberInput[];
-    public readonly customStringInputs?: QuirkTemplateCustomStringInput[];
 
     private constructor(
         id: string,
@@ -338,7 +321,6 @@ class QuirkTemplate {
         baseUsageModifier: number,
         optionGroups?: QuirkTemplateOptionGroup[],
         customNumberInputs?: QuirkTemplateCustomNumberInput[],
-        customStringInputs?: QuirkTemplateCustomStringInput[]
     ) {
         this.id = id;
         this.displayName = displayName;
@@ -346,7 +328,6 @@ class QuirkTemplate {
         this.baseUsageModifier = baseUsageModifier;
         this.optionGroups = optionGroups;
         this.customNumberInputs = customNumberInputs;
-        this.customStringInputs = customStringInputs;
     }
 
     private findOption(groupID: string, optionID: string): QuirkTemplateOption | undefined {
@@ -358,27 +339,23 @@ class QuirkTemplate {
     }
 
     /**
-     * Get the quirk's usage modifier including additional modifiers from selected options
+     * Get the quirk template's modifier from its selected options
      * @param optionSelections Map from option group ID to the selected option
      */
-    public getUsageModifier(optionSelections?: Map<string, string>, customUsageModifier?: number): number {
-        let usageModifier = this.baseUsageModifier;
+    public getOptionsModifier(optionSelections?: Map<string, string>): number {
+        let optionsModifier = 0;
 
         if (optionSelections !== undefined && this.optionGroups !== undefined) {
             optionSelections.forEach((optionID, groupID) => {
                 const option = this.findOption(groupID, optionID);
 
                 if (option !== undefined) {
-                    usageModifier += option?.usageModifier;
+                    optionsModifier += option?.usageModifier;
                 }
             });
         }
 
-        if (customUsageModifier !== undefined) {
-            usageModifier += customUsageModifier;
-        }
-
-        return usageModifier;
+        return optionsModifier;
     }
 }
 

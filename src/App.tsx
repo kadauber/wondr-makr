@@ -41,12 +41,6 @@ function App() {
         numberInputValues.set(numberInput.id, numberInput.defaultValue);
       });
       newQuirkCustomNumberInputValues.set(quirkTemplate.id, numberInputValues);
-
-      // const newQuirkCustomStringInputValues = new Map<string, string>();
-      // if (quirk.customStringInputs !== undefined) {
-      //   newQuirkCustomStringInputValues.set(quirk.customStringInputs.id, quirk.customStringInputs.defaultValue);
-      // }
-      // setQuirkCustomStringInputValues(newQuirkCustomStringInputValues);
     });
 
     setSelectedQuirkOptions(newSelectedQuirkOptions);
@@ -59,28 +53,13 @@ function App() {
     // Create quirks from state
     selectedQuirkTemplates.forEach((template: QuirkTemplate) => {
       const options = selectedQuirkOptions.get(template.id);
-      const quirk = Quirk.createQuirk(template, options);
+      const numberInputValues = quirkCustomNumberInputValues.get(template.id);
+      const quirk = Quirk.createQuirk(template, options, numberInputValues);
       quirks.add(quirk);
     });
 
     let usageModifier = 0;
     quirks.forEach(quirk => {
-      // let additionalModifier = 0;
-
-      // if (quirk.id === QuirkTemplate.MANIA_COST.id && quirk.customNumberInputs !== undefined) {
-      //   const maniaCostMod = quirkCustomNumberInputValues.get(quirk.customNumberInputs?.id);
-      //   if (maniaCostMod !== undefined) {
-      //     additionalModifier = maniaCostMod;
-      //   }
-      // }
-
-      // if (quirk.id === QuirkTemplate.RESILIENT.id && quirk.customNumberInputs !== undefined) {
-      //   const resilientRanks = quirkCustomNumberInputValues.get(quirk.customNumberInputs?.id);
-      //   if (resilientRanks !== undefined) {
-      //     additionalModifier = -1 * resilientRanks;
-      //   }
-      // }
-
       usageModifier += quirk.getUsageModifier();
     });
     return usageModifier;
@@ -116,7 +95,7 @@ function App() {
         // Copy the entire map templateID => { numberInputID => value }}
         const newNumberInputValues = new Map(quirkCustomNumberInputValues);
 
-        // Update the template's map { optionGroupID => optionID }
+        // Update the template's map { numberInputID => value }
         newNumberInputValues.get(quirkTemplate.id)?.set(inputID, value);
 
         setQuirkCustomNumberInputValues(newNumberInputValues);
