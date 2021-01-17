@@ -1,5 +1,6 @@
+import Utils from "../Utils";
 import Axiom from "./Axiom";
-import QuirkTemplate from "./QuirkTemplate";
+import Quirk from "./Quirk";
 
 class Wonder {
     public readonly wonderName: string;
@@ -7,9 +8,9 @@ class Wonder {
     public readonly axiom?: Axiom;
     public readonly rank?: number;
     public readonly flavor?: string;
-    public readonly quirks?: Set<QuirkTemplate>;
+    public readonly quirks?: Set<Quirk>;
 
-    private constructor(wonderName: string, description: string, axiom?: Axiom, rank?: number, flavor?: string, quirks?: Set<QuirkTemplate>) {
+    private constructor(wonderName: string, description: string, axiom?: Axiom, rank?: number, flavor?: string, quirks?: Set<Quirk>) {
         this.wonderName = wonderName;
         this.description = description;
         this.axiom = axiom;
@@ -41,8 +42,18 @@ class Wonder {
      * Create a new Wonder with updated quirks.
      * @param newQuirks 
      */
-    public updateQuirks(newQuirks: Set<QuirkTemplate>): Wonder {
+    public updateQuirks(newQuirks: Set<Quirk>): Wonder {
         return new Wonder(this.wonderName, this.description, this.axiom, this.rank, this.flavor, newQuirks);
+    }
+
+    /**
+     * Calculate the wonder's core modifier.
+     */
+    public getCoreModifier(): number {
+        if (this.quirks === undefined) {
+            return 0;
+        }
+        return Utils.calculateUsageModifier(this.quirks);
     }
 }
 

@@ -1,7 +1,7 @@
 import QuirkTemplate from "./QuirkTemplate";
 
 class Quirk {
-    public readonly template: QuirkTemplate;
+    private readonly template: QuirkTemplate;
     // Map from template option ids to option selection ids
     private readonly optionSelections?: Map<string, string>;
     // Arbitrary additional modifiers
@@ -19,6 +19,10 @@ class Quirk {
 
     public static createQuirk(template: QuirkTemplate, optionSelections?: Map<string, string>, customNumberInputValues?: Map<string, number>): Quirk {
         return new Quirk(template, optionSelections, customNumberInputValues);
+    }
+
+    public getDisplayName(): string {
+      return this.template.displayName;
     }
 
     public getUsageModifier(): number {
@@ -46,6 +50,10 @@ class Quirk {
         }
   
         return usageModifier;
+    }
+
+    public getEffect(): string {
+      return this.template.getEffect();
     }
 }
 

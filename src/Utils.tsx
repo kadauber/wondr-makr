@@ -1,3 +1,5 @@
+import Quirk from "./model/Quirk";
+
 class Utils {
     public static renderUsageModifier(usageModifier: number): React.ReactNode {
         let usageModifierString = "";
@@ -10,6 +12,14 @@ class Utils {
         }
 
         return <span className="tracked">{usageModifierString}</span>
+    }
+
+    public static calculateUsageModifier(quirks: Set<Quirk>): number {
+        let usageModifier = 0;
+        quirks.forEach(quirk => {
+            usageModifier += quirk.getUsageModifier();
+        });
+        return usageModifier;
     }
 }
 
