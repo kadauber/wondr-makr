@@ -131,7 +131,6 @@ function WonderQuirksForm(props: WonderQuirksFormProps) {
     return <div className={props.className ?? ""}>
         <h2>2. Add Universal Quirks</h2>
         <p><label className="b">Core Modifier: {Utils.renderUsageModifier(displayCalculatedUsageModifier())}</label></p>
-        <h3>Universal Quirks</h3>
         <div className="flex mb3">
             <label className="">
                 <div className="mb2">Size ({Utils.renderUsageModifier(generateSizeQuirk().getUsageModifier())})</div>
