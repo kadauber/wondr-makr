@@ -4,7 +4,9 @@ import WonderBasicPropertiesForm from './component/WonderBasicPropertiesForm';
 import WonderDisplay from './component/WonderDisplay';
 import WonderQuirksForm from './component/WonderQuirksForm';
 import Axiom from './model/Axiom';
-import Quirk from './model/Quirk';
+import BaseQuirk from './model/BaseQuirk';
+import PeculiarRequirementQuirk from './model/PeculiarRequirementQuirk';
+import Quirky from './model/Quirky';
 import Wonder from './model/Wonder';
 
 function App() {
@@ -21,8 +23,12 @@ function App() {
               setWonder(wonder.updateBasicProperties(newName, newDescription, newAxiom, newRank, newFlavor));
             }} />
 
-          <WonderQuirksForm onSave={(quirks: Set<Quirk>) => {
-            setWonder(wonder.updateQuirks(quirks));
+          <WonderQuirksForm onSave={(sizeQuirk: BaseQuirk, additionalQuirks: Set<BaseQuirk>, peculiarRequirements: Set<PeculiarRequirementQuirk>) => {
+            const quirks: Set<Quirky> = new Set(additionalQuirks);
+            peculiarRequirements.forEach((quirk) => {
+              quirks.add(quirk);
+            });
+            setWonder(wonder.updateQuirks(sizeQuirk, quirks));
           }} />
         </div>
 

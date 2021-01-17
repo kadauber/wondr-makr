@@ -288,7 +288,7 @@ class QuirkTemplate {
         ]
     );
 
-    public static readonly UNIVERSAL_QUIRK_TEMPLATES: QuirkTemplate[] = [
+    public static readonly UNIVERSAL_ADDITIONAL_QUIRK_TEMPLATES: QuirkTemplate[] = [
         QuirkTemplate.BASILISK_EFFECT,
         QuirkTemplate.CHARGE_UP_TIME,
         QuirkTemplate.COLLAPSIBLE,

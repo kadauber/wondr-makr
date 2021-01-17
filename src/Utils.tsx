@@ -1,4 +1,4 @@
-import Quirk from "./model/Quirk";
+import Quirky from "./model/Quirky";
 
 class Utils {
     public static renderUsageModifier(usageModifier: number): React.ReactNode {
@@ -14,7 +14,7 @@ class Utils {
         return <span className="tracked">{usageModifierString}</span>
     }
 
-    public static calculateUsageModifier(quirks: Set<Quirk>): number {
+    public static calculateUsageModifier(quirks: Set<Quirky>): number {
         let usageModifier = 0;
         quirks.forEach(quirk => {
             usageModifier += quirk.getUsageModifier();
