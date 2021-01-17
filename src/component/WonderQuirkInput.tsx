@@ -1,5 +1,5 @@
 import React from 'react';
-import QuirkTemplate, { QuirkTemplateCustomNumberInput } from '../model/QuirkTemplate';
+import QuirkTemplate, { QuirkTemplateCustomNumberInput, QuirkTemplateOption } from '../model/QuirkTemplate';
 import Utils from '../Utils';
 
 interface WonderQuirkInputProps {
@@ -8,8 +8,8 @@ interface WonderQuirkInputProps {
   isChecked: boolean;
   onIsCheckedChanged: (isChecked: boolean) => void;
 
-  optionSelections?: Map<string, string>;
-  onSelectOption: (optionGroupID: string, optionID: string) => void;
+  optionSelections?: Map<string, QuirkTemplateOption>;
+  onSelectOption: (optionGroupID: string, option: QuirkTemplateOption) => void;
 
   customNumberInputValues?: Map<string, number>;
   onCustomNumberInputValuesChanged: (inputID: string, value: number) => void;
@@ -64,15 +64,17 @@ function WonderQuirkInput(props: WonderQuirkInputProps) {
           const inputID = `${props.quirkTemplate.id}-${optionGroup.id}-${option.id}`;
           const optionUsageModifier = Utils.renderUsageModifier(option.usageModifier);
 
+          const selectedOption = props.optionSelections?.get(optionGroup.id);
+
           return <div className="flex items-center mb2 ml2" key={j}>
             <input className="mr2"
               type="radio"
               id={inputID}
               name={`${props.quirkTemplate.id}-${i}`}
               value={option.id}
-              checked={props.optionSelections?.get(optionGroup.id) === option.id}
+              checked={selectedOption !== undefined && selectedOption === option}
               onChange={(e) => {
-                props.onSelectOption(optionGroup.id, option.id);
+                props.onSelectOption(optionGroup.id, option);
               }}
             />
             <label htmlFor={inputID} className="lh-copy">{option.displayName} ({optionUsageModifier})</label>

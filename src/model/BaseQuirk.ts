@@ -1,14 +1,14 @@
-import QuirkTemplate from "./QuirkTemplate";
+import QuirkTemplate, { QuirkTemplateOption } from "./QuirkTemplate";
 import Quirky from "./Quirky";
 
 class BaseQuirk implements Quirky {
   private readonly template: QuirkTemplate;
   // Map from template option ids to option selection ids
-  private readonly optionSelections?: Map<string, string>;
+  private readonly optionSelections?: Map<string, QuirkTemplateOption>;
   // Arbitrary additional modifiers
   private readonly customNumberInputValues?: Map<string, number>;
 
-  private constructor(template: QuirkTemplate, optionSelections?: Map<string, string>, customNumberInputValues?: Map<string, number>) {
+  private constructor(template: QuirkTemplate, optionSelections?: Map<string, QuirkTemplateOption>, customNumberInputValues?: Map<string, number>) {
     this.template = template;
 
     if (optionSelections !== undefined) {
@@ -18,7 +18,7 @@ class BaseQuirk implements Quirky {
     this.customNumberInputValues = customNumberInputValues;
   }
 
-  public static createQuirkFromTemplate(template: QuirkTemplate, optionSelections?: Map<string, string>, customNumberInputValues?: Map<string, number>): BaseQuirk {
+  public static createQuirkFromTemplate(template: QuirkTemplate, optionSelections?: Map<string, QuirkTemplateOption>, customNumberInputValues?: Map<string, number>): BaseQuirk {
     return new BaseQuirk(template, optionSelections, customNumberInputValues);
   }
 
@@ -75,7 +75,7 @@ class BaseQuirk implements Quirky {
   }
 
   public getEffect(): string {
-    return this.template.getEffect();
+    return this.template.getEffect(this.optionSelections, this.customNumberInputValues);
   }
 
   public getCustomNumberValue(inputID: string): string | undefined {

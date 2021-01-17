@@ -1,3 +1,4 @@
+
 export type QuirkTemplateOptionGroup = {
     id: string;
     defaultOptionID: string;
@@ -27,7 +28,10 @@ class QuirkTemplate {
     public static readonly CHARGE_UP_TIME = new QuirkTemplate(
         "chargeuptime",
         "Charge-up Time",
-        () => "The wonder requires time to charge before it functions. Once the wonder charges up, it must be used by the end of the scene or the charge is lost. Once charged up it remains active for the duration of the scene. If the charge-up is manual, the genius' full attention is required to charge up a wonder with this variable, and the genius cannot take breaks while charging the wonder or he must start the charging again.",
+        (optionSelections?: Map<string, QuirkTemplateOption>, customNumberInputValues?: Map<string, number>) => {
+            const duration = optionSelections?.get("chargeuptimeduration")?.displayName ?? "extra time";
+            return `The wonder takes ${duration} to charge before use.`;
+        },
         0,
         [
             {
@@ -76,7 +80,10 @@ class QuirkTemplate {
     public static readonly COLLAPSIBLE = new QuirkTemplate(
         "collapsible",
         "Collapsible",
-        () => "The wonder can be shrunk when not in use. How much the wonder shrinks depends on the genius' rank in Metaptropi. Expanding the wonder costs one point of Mania and occurs reflexively. Collapsing it has no cost and requires one action. The wonder must be expanded before it can be used.",
+        (optionSelections?: Map<string, QuirkTemplateOption>, customNumberInputValues?: Map<string, number>) => {
+            const collapsedSize = customNumberInputValues?.get("collapsiblecollapsedsize") ?? 0;
+            return `The wonder can be shrunk to size ${collapsedSize} when not in use.`
+        },
         0,
         undefined,
         [{ id: "collapsiblecollapsedsize", label: "Size when collapsed:", defaultValue: 2 }]
@@ -186,7 +193,11 @@ class QuirkTemplate {
     public static readonly MANIA_COST = new QuirkTemplate(
         "maniacost",
         "Mania Cost",
-        () => `The cost for using wonders is listed in the individual Axiom descriptions. This amount can be modified up or down, to a minimum of no Mania. Every additional point of Mania required grants a +1 bonus. Every point of Mania cost removed incurs a -1 penalty. It's possible to give a wonder with no normal Mania cost (such as a scanning wonder of Apokalypsi) a Mania cost this way. Paying the Mania cost activates the wonder for one scene. An altered Mania cost affects the initial cost to activate the item and, if necessary, to "refuel" or "recharge" it. This includes the initial cost to activate vehicles, energy shields, and most weapons, a weapon's reloading cost (normally one point of Mania), and a vehicle's refueling cost for continual operation. This variable does not affect situations where the genius pays one or more points of Mania per level of Health, such as ablative armor and healing wonders of Exelixi, or where Mania points pay for points of transformation or enhancement, such as with many wonders of Metaptropi or Exelixi, or other situations where the genius converts Mania to points or perks selected from a list, such as most Epikrato-5 brain alteration. This variable also does not affect the Mania costs of general variable effects (such as "collapsible").`,
+        (optionSelections?: Map<string, QuirkTemplateOption>, customNumberInputValues?: Map<string, number>) => {
+            const maniaCostMod = customNumberInputValues?.get("maniacostmod") ?? 0;
+            const moreLess = maniaCostMod < 0 ? "less" : "more";
+            return `The wonder costs ${Math.abs(maniaCostMod)} ${moreLess} mania to use.`
+        },
         0,
         undefined,
         [{ id: "maniacostmod", label: "Mania Cost Mod:", defaultValue: 0 }]
@@ -202,7 +213,10 @@ class QuirkTemplate {
     public static readonly RESILIENT = new QuirkTemplate(
         "resilient",
         "Resilient",
-        () => "Wonders that are intended to be used close to mere mortals often employ this variable. Every -1 penalty to the wonder's Core Modifier grants three extra dice to Havoc checks.",
+        (optionSelections?: Map<string, QuirkTemplateOption>, customNumberInputs?: Map<string, number>) => {
+            const rankCount = customNumberInputs?.get("resilientrankcount") ?? 0;
+            return `This wonder gets ${rankCount * 3} extra dice on Havoc checks.`;
+        },
         0,
         undefined,
         [{ id: "resilientrankcount", label: "Ranks in resilience:", defaultValue: 0 }]
@@ -214,13 +228,17 @@ class QuirkTemplate {
         () => "Bigger wonders get bonuses, smaller wonders get penalties. Unless you're a Progenitor, in which case you have traded being a good person for making very small things.",
         0,
         undefined,
-        [{ id: "sizeinput", label: "Size:", defaultValue: 2}]
+        [{ id: "sizeinput", label: "Size:", defaultValue: 2 }]
     );
 
     public static readonly SLOW_RELOAD = new QuirkTemplate(
         "slowreload",
         "Slow Reload",
-        () => 'Some wonders require time to recharge after being used again. Wonders that duplicate old-fashioned muskets or ones that require extensive recalibration with every use employ this variable. A single "use" lasts for up to one turn. The genius must spend her turn reloading the wonder; it does not reload automatically. One-use wonders cannot benefit from this variable.',
+        (optionSelections?: Map<string, QuirkTemplateOption>, customNumberInputs?: Map<string, number>) => {
+            const reloadDuration = optionSelections?.get("slowreloadduration")?.displayName ?? "extra time";
+            const autoManually = optionSelections?.get("slowreloadmethod")?.id === "slowreloadautomatic" ? "automatically" : "manually";
+            return `This wonder takes ${reloadDuration} to reload. It reloads ${autoManually}.`
+        },
         0,
         [
             {
@@ -234,7 +252,7 @@ class QuirkTemplate {
                     },
                     {
                         id: "slowreload10minusinspiration",
-                        displayName: "10 minus Inspiration turns, minimum 2",
+                        displayName: "10 minus Inspiration turns (minimum 2)",
                         usageModifier: 2
                     },
                     {
@@ -307,7 +325,7 @@ class QuirkTemplate {
 
     public readonly id: string;
     public readonly displayName: string;
-    public readonly getEffect: (customCoreModifierInput?: number, customStringInput?: string) => string;
+    public readonly getEffect: (optionSelections?: Map<string, QuirkTemplateOption>, customNumberInputs?: Map<string, number>) => string;
     public readonly baseUsageModifier: number; // numerical modifier the quirk gives when using the wonder
     // Lists of options the Genius can use to change the quirk's usage modifier.
     public readonly optionGroups?: QuirkTemplateOptionGroup[];
@@ -317,10 +335,10 @@ class QuirkTemplate {
     private constructor(
         id: string,
         displayName: string,
-        getEffect: () => string,
+        getEffect: (optionSelections?: Map<string, QuirkTemplateOption>, customNumberInputs?: Map<string, number>) => string,
         baseUsageModifier: number,
         optionGroups?: QuirkTemplateOptionGroup[],
-        customNumberInputs?: QuirkTemplateCustomNumberInput[],
+        customNumberInputs?: QuirkTemplateCustomNumberInput[]
     ) {
         this.id = id;
         this.displayName = displayName;
@@ -330,28 +348,27 @@ class QuirkTemplate {
         this.customNumberInputs = customNumberInputs;
     }
 
-    private findOption(groupID: string, optionID: string): QuirkTemplateOption | undefined {
-        return this.optionGroups?.find((optionGroup) => {
-            return optionGroup.id === groupID;
-        })?.quirkOptions.find((option) => {
-            return option.id === optionID;
-        });
+    public static createQuirkTemplate(
+        id: string,
+        displayName: string,
+        getEffect: (optionSelections?: Map<string, QuirkTemplateOption>, customNumberInputValues?: Map<string, number>) => string,
+        baseUsageModifier: number,
+        optionGroups?: QuirkTemplateOptionGroup[],
+        customNumberInputs?: QuirkTemplateCustomNumberInput[]
+    ) {
+        return new QuirkTemplate(id, displayName, getEffect, baseUsageModifier, optionGroups, customNumberInputs);
     }
 
     /**
      * Get the quirk template's modifier from its selected options
      * @param optionSelections Map from option group ID to the selected option
      */
-    public getOptionsModifier(optionSelections?: Map<string, string>): number {
+    public getOptionsModifier(optionSelections?: Map<string, QuirkTemplateOption>): number {
         let optionsModifier = 0;
 
         if (optionSelections !== undefined && this.optionGroups !== undefined) {
-            optionSelections.forEach((optionID, groupID) => {
-                const option = this.findOption(groupID, optionID);
-
-                if (option !== undefined) {
-                    optionsModifier += option?.usageModifier;
-                }
+            optionSelections.forEach((option) => {
+                optionsModifier += option?.usageModifier;
             });
         }
 

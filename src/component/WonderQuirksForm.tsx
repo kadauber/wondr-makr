@@ -1,7 +1,8 @@
+import { groupEnd } from 'console';
 import React, { useEffect, useState } from 'react';
 import BaseQuirk from '../model/BaseQuirk';
 import PeculiarRequirementQuirk from '../model/PeculiarRequirementQuirk';
-import QuirkTemplate from '../model/QuirkTemplate';
+import QuirkTemplate, { QuirkTemplateOption } from '../model/QuirkTemplate';
 import Quirky from '../model/Quirky';
 import Utils from '../Utils';
 import WMButton from './utility/WMButton';
@@ -17,7 +18,7 @@ function WonderQuirksForm(props: WonderQuirksFormProps) {
     const [sizeInput, setSizeInput] = useState(3);
     const [selectedQuirkTemplates, setSelectedQuirkTemplates] = useState(new Set<QuirkTemplate>());
     // Map from template ID to (map from option group ID to option ID)
-    const [selectedQuirkOptions, setSelectedQuirkOptions] = useState(new Map<string, Map<string, string>>());
+    const [selectedQuirkOptions, setSelectedQuirkOptions] = useState(new Map<string, Map<string, QuirkTemplateOption>>());
     // Map from template ID to (map from number input ID to value)
     const [quirkCustomNumberInputValues, setQuirkCustomNumberInputValues] = useState(new Map<string, Map<string, number>>());
     // Peculiar requirements
@@ -25,15 +26,20 @@ function WonderQuirksForm(props: WonderQuirksFormProps) {
 
     // Initialize universal quirk settings to defaults
     useEffect(() => {
-        const newSelectedQuirkOptions = new Map<string, Map<string, string>>();
+        const newSelectedQuirkOptions = new Map<string, Map<string, QuirkTemplateOption>>();
         const newQuirkCustomNumberInputValues = new Map<string, Map<string, number>>();
 
         QuirkTemplate.UNIVERSAL_ADDITIONAL_QUIRK_TEMPLATES.forEach(quirkTemplate => {
-            const quirkTemplateOptions = new Map<string, string>();
+            const quirkTemplateOptions = new Map<string, QuirkTemplateOption>();
 
             // Initialize option groups to default values
             quirkTemplate.optionGroups?.forEach(group => {
-                quirkTemplateOptions.set(group.id, group.defaultOptionID);
+                const defaultOption = group.quirkOptions.find((option) => {
+                    return option.id === group.defaultOptionID;
+                });
+                if (defaultOption !== undefined) {
+                    quirkTemplateOptions.set(group.id, defaultOption);
+                }
             });
             newSelectedQuirkOptions.set(quirkTemplate.id, quirkTemplateOptions);
 
@@ -106,12 +112,12 @@ function WonderQuirksForm(props: WonderQuirksFormProps) {
                 setSelectedQuirkTemplates(newSelectedQuirkTemplates);
             }}
             optionSelections={selectedQuirkOptions.get(quirkTemplate.id)}
-            onSelectOption={((optionGroupID: string, optionID: string) => {
-                // Copy the entire map templateID => { optionGroupID => optionID }}
+            onSelectOption={((optionGroupID: string, option: QuirkTemplateOption) => {
+                // Copy the entire map templateID => { optionGroupID => option }}
                 const newSelectedQuirkOptions = new Map(selectedQuirkOptions);
 
-                // Update the template's map { optionGroupID => optionID }
-                newSelectedQuirkOptions.get(quirkTemplate.id)?.set(optionGroupID, optionID);
+                // Update the template's map { optionGroupID => option }
+                newSelectedQuirkOptions.get(quirkTemplate.id)?.set(optionGroupID, option);
 
                 setSelectedQuirkOptions(newSelectedQuirkOptions);
             })}
