@@ -178,7 +178,7 @@ function WonderQuirksForm(props: WonderQuirksFormProps) {
                 const newPeculiarRequirements = peculiarRequirements.slice();
                 newPeculiarRequirements.push("");
                 setPeculiarRequirements(newPeculiarRequirements);
-            }}>Add Peculiar Requirement</WMButton>
+            }}>Add Peculiar Requirement ({Utils.renderUsageModifier(PeculiarRequirementQuirk.PECULIAR_REQUIREMENT_USAGE_MODIFIER)})</WMButton>
         </div>
 
         <WMButton onClick={(e) => {

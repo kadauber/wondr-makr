@@ -6,7 +6,7 @@ export interface WMButtonProps {
 }
 
 export default function WMButton(props: PropsWithChildren<WMButtonProps>) {
-    return <button className={`pointer ${props.className ?? ""}`} onClick={props.onClick}>
+    return <button className={`pointer pa1 ${props.className ?? ""}`} onClick={props.onClick}>
         {props.children}
     </button>
 }

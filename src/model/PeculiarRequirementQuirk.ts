@@ -1,6 +1,8 @@
 import Quirky from "./Quirky";
 
 class PeculiarRequirementQuirk implements Quirky {
+    public static readonly PECULIAR_REQUIREMENT_USAGE_MODIFIER = 1;
+
     private readonly requirement: string;
 
     private constructor(requirement: string) {
@@ -16,7 +18,7 @@ class PeculiarRequirementQuirk implements Quirky {
     }
 
     public getUsageModifier(): number {
-        return 1;
+        return PeculiarRequirementQuirk.PECULIAR_REQUIREMENT_USAGE_MODIFIER;
     }
 
     public getEffect(): string {
