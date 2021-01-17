@@ -20,46 +20,46 @@ class Axiom {
         []
     ]);
     public static readonly EPIKRATO = new Axiom("epi", "Epikrato", [
-        [],
-        [],
-        [],
-        [],
-        []
+        ["Object Controller"],
+        ["Force Controller"],
+        ["Mind Controller"],
+        ["Wealth and the Market Controller", "Crowd Controller", "Mover of People and Things", "Political Dominator", "Weather Controller", "Probability Manipulator"],
+        ["Identity Controller"]
     ]);
     public static readonly EXELIXI = new Axiom("exe", "Exelixi", [
-        [],
-        [],
-        [],
-        [],
-        []
+        ["Basic Repair, Healing, and Curing", "Life Support"],
+        ["Mechanical Upgrade"],
+        ["Biological Upgrade"],
+        ["Regenerator", "Replacement Limb"],
+        ["Resurrecter and Life Extender"]
     ]);
     public static readonly KATASTROFI = new Axiom("kat", "Katastrofi", [
-        [],
-        [],
-        [],
-        [],
-        []
+        ["Weapon"],
+        ["Weapon"],
+        ["Weapon"],
+        ["Weapon"],
+        ["Weapon"]
     ]);
     public static readonly METAPTROPI = new Axiom("met", "Metaptropi", [
-        [],
-        [],
-        [],
-        [],
-        []
+        ["Appearance Changer"],
+        ["Substance Changer", "Illusion Generator"],
+        ["Grower / Shrinker"],
+        ["Shape Changer"],
+        ["Irrational Transformer"]
     ]);
     public static readonly PROSTASIA = new Axiom("pro", "Prostasia", [
-        [],
-        [],
-        [],
-        [],
-        []
+        ["Armor"],
+        ["Armor"],
+        ["Armor"],
+        ["Armor"],
+        ["Armor"]
     ]);
     public static readonly SKAFOI = new Axiom("ska", "Skafoi", [
-        [],
-        [],
-        [],
-        [],
-        []
+        ["Car", "Boat", "Bouncer"],
+        ["Plane", "Submarine", "Mole Machine"],
+        ["Spaceship", "Super-submarine"],
+        ["Teleporter", "Lightspeed Vehicle", "Dimensional Transporter"],
+        ["Temporal Distortor", "Time Machine"]
     ]);
 
     public readonly id: string;
