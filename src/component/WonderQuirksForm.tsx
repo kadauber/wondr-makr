@@ -136,10 +136,10 @@ function WonderQuirksForm(props: WonderQuirksFormProps) {
 
     return <div className={props.className ?? ""}>
         <h2>2. Add Universal Quirks</h2>
-        <p><label className="b">Core Modifier: {Utils.renderUsageModifier(displayCalculatedUsageModifier())}</label></p>
+        <p><label className="b">Core Modifier: {Utils.renderUsageModifier(displayCalculatedUsageModifier(), false)}</label></p>
         <div className="flex mb3">
             <label className="">
-                <div className="mb2">Size ({Utils.renderUsageModifier(generateSizeQuirk().getUsageModifier())})</div>
+                <div className="mb2">Size {Utils.renderUsageModifier(generateSizeQuirk().getUsageModifier())}</div>
                 <div className="flex items-center">
                     <input type="number"
                         id="size-input-number"
@@ -164,7 +164,7 @@ function WonderQuirksForm(props: WonderQuirksFormProps) {
         <div className="mv4">
             {peculiarRequirements.map((requirement, idx) => {
                 return <div className="mb3" key={idx}>
-                    <label htmlFor={`pr-${idx}`} className="b db mb2">Peculiar Requirement #{idx + 1} ({Utils.renderUsageModifier(1)})</label>
+                    <label htmlFor={`pr-${idx}`} className="b db mb2">Peculiar Requirement #{idx + 1} {Utils.renderUsageModifier(1)}</label>
                     <textarea id={`pr-${idx}`}
                         className="db border-box hover-black w-100 measure ba b--black-20 pa2 br2 mb2"
                         value={peculiarRequirements[idx]}
@@ -184,7 +184,7 @@ function WonderQuirksForm(props: WonderQuirksFormProps) {
                 const newPeculiarRequirements = peculiarRequirements.slice();
                 newPeculiarRequirements.push("");
                 setPeculiarRequirements(newPeculiarRequirements);
-            }}>Add Peculiar Requirement ({Utils.renderUsageModifier(PeculiarRequirementQuirk.PECULIAR_REQUIREMENT_USAGE_MODIFIER)})</WMButton>
+            }}>Add Peculiar Requirement {Utils.renderUsageModifier(PeculiarRequirementQuirk.PECULIAR_REQUIREMENT_USAGE_MODIFIER)}</WMButton>
         </div>
 
         <WMButton onClick={(e) => {

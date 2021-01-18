@@ -1,7 +1,7 @@
 import Quirky from "./model/Quirky";
 
 class Utils {
-    public static renderUsageModifier(usageModifier: number): React.ReactNode {
+    public static renderUsageModifier(usageModifier: number, withParens: boolean = true): React.ReactNode {
         let usageModifierString = "";
         if (usageModifier === 0) {
             usageModifierString = "+0";
@@ -11,7 +11,9 @@ class Utils {
             usageModifierString = `+${usageModifier}`;
         }
 
-        return <span className="tracked">{usageModifierString}</span>
+        const usageModNode = <span className="tracked">{usageModifierString}</span>
+
+        return withParens ? <>({usageModNode})</> : usageModNode;
     }
 
     public static calculateUsageModifier(quirks: Set<Quirky>): number {

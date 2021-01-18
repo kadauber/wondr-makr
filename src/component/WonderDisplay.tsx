@@ -8,7 +8,7 @@ interface WondrDisplayProps {
 
 function WonderDisplay(props: WondrDisplayProps) {
     function renderCoreModifier() {
-        return Utils.renderUsageModifier(props.wonder.getCoreModifier())
+        return Utils.renderUsageModifier(props.wonder.getCoreModifier(), false)
     }
 
     return <>
@@ -24,12 +24,12 @@ function WonderDisplay(props: WondrDisplayProps) {
         <p>Durability: </p>
         <h3>Quirks</h3>
         <h4>{props.wonder.sizeQuirk.getDisplayName()}: {props.wonder.sizeQuirk.getCustomNumberValue("sizeinput")}</h4>
-        <p>Modifier: {Utils.renderUsageModifier(props.wonder.sizeQuirk.getUsageModifier())}</p>
+        <p>Modifier: {Utils.renderUsageModifier(props.wonder.sizeQuirk.getUsageModifier(), false)}</p>
         {(props.wonder.additionalQuirks === undefined || props.wonder.additionalQuirks.size === 0) && <em>No additional quirks - this wonder is a normie.</em>}
         {props.wonder.additionalQuirks !== undefined && Array.from(props.wonder.additionalQuirks).map((quirk, idx) => {
             return <div key={idx}>
                 <h4>{quirk.getDisplayName()}</h4>
-                <p>Modifier: {Utils.renderUsageModifier(quirk.getUsageModifier())}</p>
+                <p>Modifier: {Utils.renderUsageModifier(quirk.getUsageModifier(), false)}</p>
                 <p>Effect: {quirk.getEffect()}</p>
             </div>
         })}

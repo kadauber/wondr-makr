@@ -53,7 +53,7 @@ function WonderQuirkInput(props: WonderQuirkInputProps) {
           props.onIsCheckedChanged(e.target.checked);
         }}
       />
-      <label htmlFor={props.quirkTemplate.id} className="lh-copy">{props.quirkTemplate.displayName} ({usageModifier})</label>
+      <label htmlFor={props.quirkTemplate.id} className="lh-copy">{props.quirkTemplate.displayName} {usageModifier}</label>
     </div>
 
     {props.isChecked && props.quirkTemplate.customNumberInputs !== undefined && renderCustomNumberInputs()}
@@ -77,7 +77,7 @@ function WonderQuirkInput(props: WonderQuirkInputProps) {
                 props.onSelectOption(optionGroup.id, option);
               }}
             />
-            <label htmlFor={inputID} className="lh-copy">{option.displayName} ({optionUsageModifier})</label>
+            <label htmlFor={inputID} className="lh-copy">{option.displayName} {optionUsageModifier}</label>
           </div>
         })}
       </div>
