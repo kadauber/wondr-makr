@@ -16,7 +16,7 @@ interface WonderQuirkInputProps {
 }
 
 function WonderQuirkInput(props: WonderQuirkInputProps) {
-  const usageModifier = Utils.renderUsageModifier(props.quirkTemplate.baseUsageModifier);
+  const usageModifier = props.quirkTemplate.baseUsageModifier !== 0 && Utils.renderUsageModifier(props.quirkTemplate.baseUsageModifier);
 
   function renderNumberInput(numberInput: QuirkTemplateCustomNumberInput) {
     return <div className="ml2 mb2 bl b--near-black" key={numberInput.id}>
@@ -62,7 +62,7 @@ function WonderQuirkInput(props: WonderQuirkInputProps) {
       return <div key={i} className="ml2 bl b--near-black">
         {optionGroup.quirkOptions.map((option, j) => {
           const inputID = `${props.quirkTemplate.id}-${optionGroup.id}-${option.id}`;
-          const optionUsageModifier = Utils.renderUsageModifier(option.usageModifier);
+          const optionUsageModifier = option.usageModifier !== 0 && Utils.renderUsageModifier(option.usageModifier);
 
           const selectedOption = props.optionSelections?.get(optionGroup.id);
 
