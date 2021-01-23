@@ -5,24 +5,62 @@ import QuirkTemplate from "./QuirkTemplate";
 import Quirky from "./Quirky";
 
 class Wonder {
-    public readonly wonderName: string;
-    public readonly description: string;
-    public readonly sizeQuirk: BaseQuirk;
-    public readonly axiom?: Axiom;
-    public readonly rank?: number;
-    public readonly flavor?: string;
-    public readonly additionalQuirks?: Set<Quirky>;
-    public readonly axiomQuirks?: Set<Quirky>;
+    private _wonderName: string;
+    private _creatorName: string;
+    private _description: string;
+    private _sizeQuirk: BaseQuirk;
+    private _axiom?: Axiom;
+    private _rank?: number;
+    private _flavor?: string;
+    private _additionalQuirks?: Set<Quirky>;
+    private _axiomQuirks?: Set<Quirky>;
 
-    private constructor(wonderName: string, description: string, sizeQuirk: BaseQuirk, axiom?: Axiom, rank?: number, flavor?: string, additionalQuirks?: Set<Quirky>, axiomQuirks?: Set<Quirky>) {
-        this.wonderName = wonderName;
-        this.description = description;
-        this.sizeQuirk = sizeQuirk;
-        this.axiom = axiom;
-        this.rank = rank;
-        this.flavor = flavor;
-        this.additionalQuirks = new Set(additionalQuirks);
-        this.axiomQuirks = new Set(axiomQuirks);
+    private constructor(wonderName: string, creatorName: string, description: string, sizeQuirk: BaseQuirk, axiom?: Axiom, rank?: number, flavor?: string, additionalQuirks?: Set<Quirky>, axiomQuirks?: Set<Quirky>) {
+        this._wonderName = wonderName;
+        this._creatorName = creatorName;
+        this._description = description;
+        this._sizeQuirk = sizeQuirk;
+        this._axiom = axiom;
+        this._rank = rank;
+        this._flavor = flavor;
+        this._additionalQuirks = new Set(additionalQuirks);
+        this._axiomQuirks = new Set(axiomQuirks);
+    }
+
+    public get wonderName(): string {
+        return this._wonderName;
+    }
+
+    public get creatorName(): string {
+        return this._creatorName;
+    }
+
+    public get description(): string {
+        return this._description;
+    }
+
+    public get sizeQuirk(): BaseQuirk {
+        return this._sizeQuirk;
+    }
+
+    public get axiom(): Axiom | undefined {
+        return this._axiom;
+    }
+
+    public get rank(): number | undefined {
+        return this._rank;
+    }
+
+    public get flavor(): string | undefined {
+        return this._flavor;
+    }
+
+    public get additionalQuirks(): Set<Quirky> | undefined {
+        return this._additionalQuirks;
+    }
+
+    public get axiomQuirks(): Set<Quirky> | undefined {
+        return this._axiomQuirks;
     }
 
     /**
@@ -30,7 +68,11 @@ class Wonder {
      */
     public static createWonder(): Wonder {
         const sizeQuirk = BaseQuirk.createQuirkFromTemplate(QuirkTemplate.SIZE);
-        return new Wonder("", "", sizeQuirk);
+        return new Wonder("", "", "", sizeQuirk);
+    }
+
+    private cloneWonder(): Wonder {
+        return new Wonder(this._wonderName, this._creatorName, this._description, this._sizeQuirk, this._axiom, this._rank, this._flavor, this._additionalQuirks, this._axiomQuirks);
     }
 
     /**
@@ -41,8 +83,15 @@ class Wonder {
      * @param newRank 
      * @param newFlavor 
      */
-    public updateBasicProperties(newName: string, newDescription: string, newAxiom?: Axiom, newRank?: number, newFlavor?: string): Wonder {
-        return new Wonder(newName, newDescription, this.sizeQuirk, newAxiom, newRank, newFlavor, this.additionalQuirks, this.axiomQuirks);
+    public updateBasicProperties(newName: string, newCreatorName: string, newDescription: string, newAxiom?: Axiom, newRank?: number, newFlavor?: string): Wonder {
+        const newWonder = this.cloneWonder();
+        newWonder._wonderName = newName;
+        newWonder._creatorName = newCreatorName;
+        newWonder._description = newDescription;
+        newWonder._axiom = newAxiom;
+        newWonder._rank = newRank;
+        newWonder._flavor = newFlavor;
+        return newWonder;
     }
 
     /**
@@ -50,27 +99,32 @@ class Wonder {
      * @param newSizeQuirk
      * @param newQuirks 
      */
-    public updateAdditionalQuirks(newSizeQuirk: BaseQuirk, additionalQuirks: Set<Quirky>): Wonder {
-        return new Wonder(this.wonderName, this.description, newSizeQuirk, this.axiom, this.rank, this.flavor, additionalQuirks, this.axiomQuirks);
+    public updateAdditionalQuirks(newSizeQuirk: BaseQuirk, newAdditionalQuirks: Set<Quirky>): Wonder {
+        const newWonder = this.cloneWonder();
+        newWonder._sizeQuirk = newSizeQuirk;
+        newWonder._additionalQuirks = newAdditionalQuirks;
+        return newWonder;
     }
 
     /**
      * Create a new Wonder with updated axiom quirks.
      */
     public updateAxiomQuirks(newAxiomQuirks: Set<Quirky>): Wonder {
-        return new Wonder(this.wonderName, this.description, this.sizeQuirk, this.axiom, this.rank, this.flavor, this.additionalQuirks, newAxiomQuirks);
+        const newWonder = this.cloneWonder();
+        newWonder._axiomQuirks = newAxiomQuirks;
+        return newWonder;
     }
 
     /**
      * Calculate the wonder's core modifier.
      */
     public getCoreModifier(): number {
-        if (this.additionalQuirks === undefined) {
-            return this.sizeQuirk.getUsageModifier();
+        if (this._additionalQuirks === undefined) {
+            return this._sizeQuirk.getUsageModifier();
         }
 
-        const quirks = new Set(this.additionalQuirks);
-        quirks.add(this.sizeQuirk);
+        const quirks = new Set(this._additionalQuirks);
+        quirks.add(this._sizeQuirk);
 
         return Utils.calculateUsageModifier(quirks);
     }

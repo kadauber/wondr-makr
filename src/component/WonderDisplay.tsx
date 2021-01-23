@@ -19,13 +19,14 @@ function WonderDisplay(props: WondrDisplayProps) {
         }
         if (props.wonder.axiomQuirks !== undefined) {
             quirks = quirks.concat(Array.from(props.wonder.axiomQuirks));
-        } 
+        }
         return quirks;
     }
     const quirks = getQuirks();
 
     return <>
         <h2>{props.wonder.wonderName.length > 0 ? props.wonder.wonderName : <em>My Wonder</em>}</h2>
+        {props.wonder.creatorName.length > 0 && <p>Created by {props.wonder.creatorName}</p>}
         <p className="b">{props.wonder.axiom?.displayName} {props.wonder.rank} {props.wonder.flavor}</p>
         {props.wonder.description && <p>{props.wonder.description.length > 0 ? props.wonder.description : <em>All about my wonder...</em>}</p>}
         <p><label className="b">Core Modifier: {renderCoreModifier()}</label></p>

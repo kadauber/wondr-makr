@@ -20,8 +20,8 @@ function App() {
       <div className="flex">
         <div className="pa2 bg-near-white mw7 shadow-1 flex-grow-1">
           <WonderBasicPropertiesForm
-            onSave={(newName: string, newDescription: string, newAxiom: Axiom, newRank: number, newFlavor: string) => {
-              setWonder(wonder.updateBasicProperties(newName, newDescription, newAxiom, newRank, newFlavor));
+            onSave={(newName: string, newCreatorName: string, newDescription: string, newAxiom: Axiom, newRank: number, newFlavor: string) => {
+              setWonder(wonder.updateBasicProperties(newName, newCreatorName, newDescription, newAxiom, newRank, newFlavor));
             }} />
 
           <h2>2. Add Quirks</h2>
@@ -30,7 +30,7 @@ function App() {
             peculiarRequirements.forEach((quirk) => {
               quirks.add(quirk);
             });
-            setWonder(wonder.updateUniversalQuirks(sizeQuirk, quirks));
+            setWonder(wonder.updateAdditionalQuirks(sizeQuirk, quirks));
           }} />
 
           {wonder.axiom !== undefined && <WonderAxiomQuirksForm

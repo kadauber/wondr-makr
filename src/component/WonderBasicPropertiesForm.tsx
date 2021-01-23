@@ -5,7 +5,7 @@ import WMDotSelector from '../component/utility/WMDotSelector';
 
 interface WonderBasicPropertiesFormProps {
     className?: string;
-    onSave: (newName: string, newDescription: string, newAxiom: Axiom, newRank: number, newFlavor: string) => void;
+    onSave: (newName: string, creatorName: string, newDescription: string, newAxiom: Axiom, newRank: number, newFlavor: string) => void;
 }
 
 function WonderBasicPropertiesForm(props: WonderBasicPropertiesFormProps) {
@@ -23,6 +23,7 @@ function WonderBasicPropertiesForm(props: WonderBasicPropertiesFormProps) {
 
     // Form state
     const [wonderNameDraft, setWonderNameDraft] = useState("");
+    const [creatorNameDraft, setCreatorNameDraft] = useState("");
     const [wonderDescriptionDraft, setWonderDescriptionDraft] = useState("");
     const [selectedAxiomDraft, setSelectedAxiomDraft] = useState(axioms[0]);
     const [selectedRankDraft, setSelectedRankDraft] = useState(1);
@@ -61,6 +62,16 @@ function WonderBasicPropertiesForm(props: WonderBasicPropertiesFormProps) {
                     type="text"
                     value={wonderNameDraft}
                     onChange={(e) => setWonderNameDraft(e.target.value)}
+                />
+            </div>
+
+            <div>
+                <label htmlFor="wonder-creator-name" className="b db mb2">Creator</label>
+                <input id="wonder-creator-name"
+                    className="input-reset ba b--black-20 pa2 mb2 db w-100 measure"
+                    type="text"
+                    value={creatorNameDraft}
+                    onChange={(e) => setCreatorNameDraft(e.target.value)}
                 />
             </div>
 
@@ -105,7 +116,7 @@ function WonderBasicPropertiesForm(props: WonderBasicPropertiesFormProps) {
 
             <div>
                 <WMButton onClick={(e) => {
-                    props.onSave(wonderNameDraft, wonderDescriptionDraft, selectedAxiomDraft, selectedRankDraft, selectedFlavorDraft);
+                    props.onSave(wonderNameDraft, creatorNameDraft, wonderDescriptionDraft, selectedAxiomDraft, selectedRankDraft, selectedFlavorDraft);
                 }}>Save</WMButton>
             </div>
         </div>
