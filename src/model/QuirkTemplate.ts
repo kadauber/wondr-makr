@@ -1,3 +1,4 @@
+import BaseQuirk from "./BaseQuirk";
 
 export type QuirkTemplateOptionGroup = {
     id: string;
@@ -152,7 +153,12 @@ class QuirkTemplate {
     public static readonly LIMITED_USES = new QuirkTemplate(
         "limiteduses",
         "Limited Uses",
-        () => `Some wonders are designed to be used once, or at most a handful of times. Limited-use wonders grant a general bonus depending on how many uses they have. A "use" is defined as a single activation of the device for one turn. A limited-use wonder can be reloaded or recharged by taking one minute per use and spending a number of points of Mania per use equal to the wonder's activation cost (minimum one point of Mania). A short-term wonder cannot be reloaded or recharged and is destroyed completely when empty.`,
+        (optionSelections?: Map<string, QuirkTemplateOption>, customNumberInputValues?: Map<string, number>) => {
+            const numberOfUses = optionSelections?.get("limitedusesusecount")?.id === "limitedusesequaltoinspiration" ? "uses equal to Inspiration" : "one use";
+            const isReloadableSelection = optionSelections?.get("limitedusescanbereloaded");
+            const isReloadable = `${isReloadableSelection?.id === "limitedusescanbereloaded" ? "can" : "cannot"} be reloaded/recharged`;
+            return `This wonder has ${numberOfUses}. It ${isReloadable}.`;
+        },
         0,
         [
             {
@@ -373,6 +379,24 @@ class QuirkTemplate {
         }
 
         return optionsModifier;
+    }
+
+    public static generateQuirks(
+        selectedQuirkTemplates: Set<QuirkTemplate>,
+        selectedQuirkOptions: Map<string, Map<string, QuirkTemplateOption>>,
+        quirkCustomNumberInputValues: Map<string, Map<string, number>>
+    ): Set<BaseQuirk> {
+        const quirks = new Set<BaseQuirk>();
+
+        // Create quirks from checkboxes
+        selectedQuirkTemplates.forEach((template: QuirkTemplate) => {
+            const options = selectedQuirkOptions.get(template.id);
+            const numberInputValues = quirkCustomNumberInputValues.get(template.id);
+            const quirk = BaseQuirk.createQuirkFromTemplate(template, options, numberInputValues);
+            quirks.add(quirk);
+        });
+
+        return quirks;
     }
 }
 

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
+import WonderAxiomQuirksForm from './component/WonderAxiomQuirksForm';
 import WonderBasicPropertiesForm from './component/WonderBasicPropertiesForm';
 import WonderDisplay from './component/WonderDisplay';
-import WonderQuirksForm from './component/WonderQuirksForm';
+import WonderQuirksForm from './component/WonderUniversalQuirksForm';
 import Axiom from './model/Axiom';
 import BaseQuirk from './model/BaseQuirk';
 import PeculiarRequirementQuirk from './model/PeculiarRequirementQuirk';
@@ -23,20 +24,28 @@ function App() {
               setWonder(wonder.updateBasicProperties(newName, newDescription, newAxiom, newRank, newFlavor));
             }} />
 
+          <h2>2. Add Quirks</h2>
           <WonderQuirksForm onSave={(sizeQuirk: BaseQuirk, additionalQuirks: Set<BaseQuirk>, peculiarRequirements: Set<PeculiarRequirementQuirk>) => {
             const quirks: Set<Quirky> = new Set(additionalQuirks);
             peculiarRequirements.forEach((quirk) => {
               quirks.add(quirk);
             });
-            setWonder(wonder.updateQuirks(sizeQuirk, quirks));
+            setWonder(wonder.updateUniversalQuirks(sizeQuirk, quirks));
           }} />
+
+          {wonder.axiom !== undefined && <WonderAxiomQuirksForm
+            axiom={wonder.axiom}
+            onSave={(quirks) => {
+              setWonder(wonder.updateAxiomQuirks(quirks));
+            }}
+          />}
         </div>
 
         <div className="ml2 pa2 bg-near-white mw7 shadow-1 flex-grow-1">
           <WonderDisplay wonder={wonder} />
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 
