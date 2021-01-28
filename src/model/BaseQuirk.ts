@@ -71,6 +71,50 @@ class BaseQuirk implements Quirky {
       }
     }
 
+    if (this.template.id === "longrange") {
+      const longRangeRank = this.customNumberInputValues?.get("longrangerank");
+      if (longRangeRank !== undefined) {
+        usageModifier = longRangeRank * -1;
+      }
+    }
+
+    if (this.template.id === "manyminds") {
+      const manyMindsRank = this.customNumberInputValues?.get("manymindsrank") ?? 0;
+      if (manyMindsRank < 0) {
+        return 0;
+      } else {
+        return manyMindsRank * -1;
+      }
+    }
+
+    if (this.template.id === "increasedrangeexelixi" || this.template.id === "increasedrangemetaptropi" || this.template.id === "increasedrangeskafoi") {
+      const increasedRangeRank = this.customNumberInputValues?.get("increasedrangerank");
+      if (increasedRangeRank !== undefined) {
+        usageModifier += increasedRangeRank * -1;
+      }
+    }
+
+    if (this.template.id === "adjustedrange") {
+      const adjustedRangeRank = this.customNumberInputValues?.get("rangeadjustment");
+      if (adjustedRangeRank !== undefined) {
+        usageModifier += adjustedRangeRank * -1;
+      }
+    }
+
+    if (this.template.id === "armorpiercing") {
+      const armorPiercingRanks = this.customNumberInputValues?.get("armorpiercingranks");
+      if (armorPiercingRanks !== undefined) {
+        usageModifier += armorPiercingRanks * -1;
+      }
+    }
+
+    if (this.template.id === "goodbalanceandweight") {
+      const goodBalanceAndWeightRanks = this.customNumberInputValues?.get("goodbalanceandweightranks");
+      if (goodBalanceAndWeightRanks !== undefined) {
+        usageModifier += goodBalanceAndWeightRanks * -1;
+      }
+    }
+
     return usageModifier;
   }
 

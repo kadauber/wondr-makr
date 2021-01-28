@@ -52,75 +52,72 @@ function WonderBasicPropertiesForm(props: WonderBasicPropertiesFormProps) {
         </select>
     }
 
-    return <div className={props.className ?? ""}>
-        <h2>1. Describe Wonder</h2>
-        <div className="flex flex-column" style={{ gap: "1rem" }}>
-            <div>
-                <label htmlFor="wonder-name" className="b db mb2">Name</label>
-                <input id="wonder-name"
-                    className="input-reset ba b--black-20 pa2 mb2 db w-100 measure"
-                    type="text"
-                    value={wonderNameDraft}
-                    onChange={(e) => setWonderNameDraft(e.target.value)}
+    return <div className="flex flex-column" style={{ gap: "1rem" }}>
+        <div>
+            <label htmlFor="wonder-name" className="b db mb2">Name</label>
+            <input id="wonder-name"
+                className="input-reset ba b--black-20 pa2 mb2 db w-100 measure"
+                type="text"
+                value={wonderNameDraft}
+                onChange={(e) => setWonderNameDraft(e.target.value)}
+            />
+        </div>
+
+        <div>
+            <label htmlFor="wonder-creator-name" className="b db mb2">Creator</label>
+            <input id="wonder-creator-name"
+                className="input-reset ba b--black-20 pa2 mb2 db w-100 measure"
+                type="text"
+                value={creatorNameDraft}
+                onChange={(e) => setCreatorNameDraft(e.target.value)}
+            />
+        </div>
+
+        <div className="flex" style={{ gap: "2rem" }}>
+            <div className="">
+                <label htmlFor="wonder-axiom" className="b db mb2">Axiom</label>
+                <select id="wonder-axiom"
+                    className="db mb3 h2"
+                    value={selectedAxiomDraft.id}
+                    onChange={(e) => {
+                        const newAxiom = axioms.find(axiom => axiom.id === e.target.value);
+                        if (newAxiom !== undefined) {
+                            setSelectedAxiomDraft(newAxiom);
+                        }
+                    }}>
+                    {axioms.map((val, i) =>
+                        <option key={i} value={val.id}>{val.displayName}</option>
+                    )}
+                </select>
+            </div>
+            <div className="">
+                <label htmlFor="wonder-rank" className="b db mb2">Rank</label>
+                <WMDotSelector
+                    id="wonder-rank"
+                    className="mb3 h2 flex items-center"
+                    value={selectedRankDraft}
+                    onChange={(rank) => setSelectedRankDraft(rank)}
                 />
             </div>
-
             <div>
-                <label htmlFor="wonder-creator-name" className="b db mb2">Creator</label>
-                <input id="wonder-creator-name"
-                    className="input-reset ba b--black-20 pa2 mb2 db w-100 measure"
-                    type="text"
-                    value={creatorNameDraft}
-                    onChange={(e) => setCreatorNameDraft(e.target.value)}
-                />
-            </div>
-
-            <div className="flex" style={{ gap: "2rem" }}>
-                <div className="">
-                    <label htmlFor="wonder-axiom" className="b db mb2">Axiom</label>
-                    <select id="wonder-axiom"
-                        className="db mb3 h2"
-                        onChange={(e) => {
-                            const newAxiom = axioms.find(axiom => axiom.id === e.target.value);
-                            if (newAxiom !== undefined) {
-                                setSelectedAxiomDraft(newAxiom);
-                            }
-                        }}>
-                        {axioms.map((val, i) =>
-                            <option key={i} value={val.id}>{val.displayName}</option>
-                        )}
-                    </select>
-                </div>
-                <div className="">
-                    <label htmlFor="wonder-rank" className="b db mb2">Rank</label>
-                    <WMDotSelector
-                        id="wonder-rank"
-                        className="mb3 h2 flex items-center"
-                        value={selectedRankDraft}
-                        onChange={(rank) => setSelectedRankDraft(rank)}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="wonder-flavor" className="b db mb2">Flavor</label>
-                    {renderSelectFlavor()}
-                </div>
-            </div>
-
-            <div>
-                <label htmlFor="wonder-desc" className="b db mb2">Description</label>
-                <textarea id="wonder-desc"
-                    className="db border-box hover-black w-100 measure ba b--black-20 pa2 br2 mb2"
-                    value={wonderDescriptionDraft}
-                    onChange={(e) => setWonderDescriptionDraft(e.target.value)}></textarea>
-            </div>
-
-            <div>
-                <WMButton onClick={(e) => {
-                    props.onSave(wonderNameDraft, creatorNameDraft, wonderDescriptionDraft, selectedAxiomDraft, selectedRankDraft, selectedFlavorDraft);
-                }}>Save</WMButton>
+                <label htmlFor="wonder-flavor" className="b db mb2">Flavor</label>
+                {renderSelectFlavor()}
             </div>
         </div>
 
+        <div>
+            <label htmlFor="wonder-desc" className="b db mb2">Description</label>
+            <textarea id="wonder-desc"
+                className="db border-box hover-black w-100 measure ba b--black-20 pa2 br2 mb2"
+                value={wonderDescriptionDraft}
+                onChange={(e) => setWonderDescriptionDraft(e.target.value)}></textarea>
+        </div>
+
+        <div>
+            <WMButton onClick={(e) => {
+                props.onSave(wonderNameDraft, creatorNameDraft, wonderDescriptionDraft, selectedAxiomDraft, selectedRankDraft, selectedFlavorDraft);
+            }}>Save</WMButton>
+        </div>
     </div>
 }
 

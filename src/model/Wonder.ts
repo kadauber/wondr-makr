@@ -119,14 +119,16 @@ class Wonder {
      * Calculate the wonder's core modifier.
      */
     public getCoreModifier(): number {
-        if (this._additionalQuirks === undefined) {
-            return this._sizeQuirk.getUsageModifier();
+        let coreModifier = this._sizeQuirk.getUsageModifier();
+        if (this._additionalQuirks !== undefined) {
+            coreModifier += Utils.calculateUsageModifier(this._additionalQuirks);
         }
 
-        const quirks = new Set(this._additionalQuirks);
-        quirks.add(this._sizeQuirk);
+        if (this._axiomQuirks !== undefined) {
+            coreModifier += Utils.calculateUsageModifier(this._axiomQuirks);
+        }
 
-        return Utils.calculateUsageModifier(quirks);
+        return coreModifier;
     }
 }
 

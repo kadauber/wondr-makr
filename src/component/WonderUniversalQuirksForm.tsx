@@ -18,7 +18,7 @@ function WonderQuirksForm(props: WonderQuirksFormProps) {
     const [sizeInput, setSizeInput] = useState(3);
 
     // Selected quirk templates
-    const {selectedQuirkTemplates, dispatchToSelectedQuirkTemplates} = useSelectedQuirkTemplates();
+    const { selectedQuirkTemplates, dispatchToSelectedQuirkTemplates } = useSelectedQuirkTemplates();
     // Map from template ID to (map from option group ID to option ID)
     const { selectedQuirkOptions, dispatchToSelectedQuirkOptions } = useSelectedQuirkOptions(QuirkTemplate.UNIVERSAL_ADDITIONAL_QUIRK_TEMPLATES);
     // Map from template ID to (map from number input ID to value)
@@ -103,7 +103,6 @@ function WonderQuirksForm(props: WonderQuirksFormProps) {
     }
 
     return <div className={props.className ?? ""}>
-        <h3>Universal Quirks</h3>
         <p><label className="b">Core Modifier: {Utils.renderUsageModifier(displayCalculatedUsageModifier(), false)}</label></p>
         <div className="flex mb3">
             <label className="">
@@ -137,7 +136,7 @@ function WonderQuirksForm(props: WonderQuirksFormProps) {
                         className="db border-box hover-black w-100 measure ba b--black-20 pa2 br2 mb2"
                         value={peculiarRequirements[idx]}
                         onChange={(e) => dispatchToPeculiarRequirements({ type: "update", requirement: e.target.value, idx })}></textarea>
-                    <WMButton onClick={(e) => dispatchToPeculiarRequirements({ type: "remove", idx}) }>Remove</WMButton>
+                    <WMButton onClick={(e) => dispatchToPeculiarRequirements({ type: "remove", idx })}>Remove</WMButton>
                 </div>
             })}
             <WMButton onClick={(e) => dispatchToPeculiarRequirements({ type: "add" })}>Add Peculiar Requirement {Utils.renderUsageModifier(PeculiarRequirementQuirk.PECULIAR_REQUIREMENT_USAGE_MODIFIER)}</WMButton>

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Axiom from "../model/Axiom";
 import BaseQuirk from "../model/BaseQuirk";
-import QuirkTemplate, { QuirkTemplateOption } from "../model/QuirkTemplate";
+import QuirkTemplate from "../model/QuirkTemplate";
 import { useQuirkCustomNumberInputValues, useSelectedQuirkOptions, useSelectedQuirkTemplates } from "./quirkFormHooks";
 import WMButton from "./utility/WMButton";
 import WonderQuirkInput from "./WonderQuirkInput";
@@ -24,9 +24,9 @@ function WonderAxiomQuirksForm(props: WonderAxiomQuirksFormProps) {
     }
 
     return <>
-        <h3>Axiom Quirks</h3>
         {props.axiom?.quirkTemplates.map((quirkTemplate) => {
-            return <WonderQuirkInput quirkTemplate={quirkTemplate}
+            return <WonderQuirkInput key={quirkTemplate.id}
+                quirkTemplate={quirkTemplate}
                 isChecked={selectedQuirkTemplates.has(quirkTemplate)}
                 onIsCheckedChanged={(isChecked) => dispatchToSelectedQuirkTemplates({ quirkTemplate, isChecked })}
                 optionSelections={selectedQuirkOptions.get(quirkTemplate.id)}

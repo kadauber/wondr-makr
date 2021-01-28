@@ -19,12 +19,13 @@ function App() {
       <h1>Wondr Makr</h1>
       <div className="flex">
         <div className="pa2 bg-near-white mw7 shadow-1 flex-grow-1">
+          <h2>1. Describe Wonder</h2>
           <WonderBasicPropertiesForm
             onSave={(newName: string, newCreatorName: string, newDescription: string, newAxiom: Axiom, newRank: number, newFlavor: string) => {
               setWonder(wonder.updateBasicProperties(newName, newCreatorName, newDescription, newAxiom, newRank, newFlavor));
             }} />
 
-          <h2>2. Add Quirks</h2>
+          <h2>2. Add Universal Quirks</h2>
           <WonderQuirksForm onSave={(sizeQuirk: BaseQuirk, additionalQuirks: Set<BaseQuirk>, peculiarRequirements: Set<PeculiarRequirementQuirk>) => {
             const quirks: Set<Quirky> = new Set(additionalQuirks);
             peculiarRequirements.forEach((quirk) => {
@@ -33,12 +34,15 @@ function App() {
             setWonder(wonder.updateAdditionalQuirks(sizeQuirk, quirks));
           }} />
 
-          {wonder.axiom !== undefined && <WonderAxiomQuirksForm
-            axiom={wonder.axiom}
-            onSave={(quirks) => {
-              setWonder(wonder.updateAxiomQuirks(quirks));
-            }}
-          />}
+          {wonder.axiom !== undefined && <>
+            <h2>3. Add Axiom Quirks</h2>
+            <WonderAxiomQuirksForm
+              axiom={wonder.axiom}
+              onSave={(quirks) => {
+                setWonder(wonder.updateAxiomQuirks(quirks));
+              }}
+            />
+          </>}
         </div>
 
         <div className="ml2 pa2 bg-near-white mw7 shadow-1 flex-grow-1">
