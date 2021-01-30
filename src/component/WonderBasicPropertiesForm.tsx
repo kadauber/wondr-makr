@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import Axiom from '../model/Axiom';
 import WMButton from '../component/utility/WMButton';
 import WMDotSelector from '../component/utility/WMDotSelector';
+import Axiom from '../model/Axiom';
+import Apocalypsi from '../model/axioms/Apocalypsi';
+import Automata from '../model/axioms/Automata';
+import Epikrato from '../model/axioms/Epikrato';
+import Exelixi from '../model/axioms/Exelixi';
+import Katastrofi from '../model/axioms/Katastrofi';
+import Metaptropi from '../model/axioms/Metaptropi';
+import Prostasia from '../model/axioms/Prostasia';
+import Skafoi from '../model/axioms/Skafoi';
 
 interface WonderBasicPropertiesFormProps {
     className?: string;
@@ -11,14 +19,14 @@ interface WonderBasicPropertiesFormProps {
 function WonderBasicPropertiesForm(props: WonderBasicPropertiesFormProps) {
     // Axiom options
     const axioms: Axiom[] = [
-        Axiom.APOCALYPSI,
-        Axiom.AUTOMATA,
-        Axiom.EPIKRATO,
-        Axiom.EXELIXI,
-        Axiom.KATASTROFI,
-        Axiom.METAPTROPI,
-        Axiom.PROSTASIA,
-        Axiom.SKAFOI
+        Apocalypsi.create(),
+        Automata.create(),
+        Epikrato.create(),
+        Exelixi.create(),
+        Katastrofi.create(),
+        Metaptropi.create(),
+        Prostasia.create(),
+        Skafoi.create()
     ];
 
     // Form state
