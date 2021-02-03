@@ -1,16 +1,25 @@
 import Axiom, { FlavorList } from "../Axiom";
+import Flavor from "../Flavor";
 import QuirkTemplate, { QuirkTemplateOption } from "../QuirkTemplate";
 
 class Katastrofi extends Axiom {
     public static readonly ID = "kat";
     public static readonly DISPLAY_NAME = "Katastrofi";
 
+    public static readonly FLAVORS = {
+        WEAPON_1: Flavor.createFlavor("weapon1", "Weapon"),
+        WEAPON_2: Flavor.createFlavor("weapon2", "Weapon"),
+        WEAPON_3: Flavor.createFlavor("weapon3", "Weapon"),
+        WEAPON_4: Flavor.createFlavor("weapon4", "Weapon"),
+        WEAPON_5: Flavor.createFlavor("weapon5", "Weapon")
+    }
+
     public static readonly FLAVOR_LIST: FlavorList = [
-        ["Weapon"],
-        ["Weapon"],
-        ["Weapon"],
-        ["Weapon"],
-        ["Weapon"]
+        [Katastrofi.FLAVORS.WEAPON_1],
+        [Katastrofi.FLAVORS.WEAPON_2],
+        [Katastrofi.FLAVORS.WEAPON_3],
+        [Katastrofi.FLAVORS.WEAPON_4],
+        [Katastrofi.FLAVORS.WEAPON_5]
     ];
 
     public static readonly QUIRK_TEMPLATES: QuirkTemplate[] = [

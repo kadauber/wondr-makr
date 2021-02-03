@@ -1,16 +1,31 @@
 import Axiom, { FlavorList } from "../Axiom";
+import Flavor from "../Flavor";
 import QuirkTemplate from "../QuirkTemplate";
 
 class Prostasia extends Axiom {
-    public static readonly ID = "met";
+    public static readonly ID = "pro";
     public static readonly DISPLAY_NAME = "Prostasia";
 
+    public static readonly FLAVORS = {
+        PERSONAL_ARMOR: Flavor.createFlavor("personalarmor", "Personal Armor"),
+        IMMUNIZATION: Flavor.createFlavor("immunization", "Immunization or Vaccine"),
+        EXTERNAL_ARMOR: Flavor.createFlavor("extrenalarmor", "External Armor"),
+        DATA_SECURITY: Flavor.createFlavor("datasecurity", "Data Security"),
+        LOCKBOX: Flavor.createFlavor("lockbox", "Lockbox"),
+        ARCHITECTURE: Flavor.createFlavor("architecture", "Architecture"),
+        MENTAL_SHIELD: Flavor.createFlavor("mentalshield", "Mental Shield"),
+        MORPHIC_SHIELD: Flavor.createFlavor("morphicshield", "Morphic Shield"),
+        OCCULT_SHIELD: Flavor.createFlavor("occultshield", "Occult Shield"),
+        DIMENSIONAL_SHIELD: Flavor.createFlavor("dimensionalshield", "Dimensional Shield"),
+        IMPENETRABOX: Flavor.createFlavor("impenetrabox", "Impenetrabox")
+    }
+
     public static readonly FLAVOR_LIST: FlavorList = [
-        ["Personal Armor", "Immunization or Vaccine"],
-        ["External Armor", "Data Security", "Lockbox", "Architecture"],
-        ["Mental Shield", "Morphic Shield", "Occult Shield"],
-        ["Dimensional Shield"],
-        ["Impenetrabox"]
+        [Prostasia.FLAVORS.PERSONAL_ARMOR, Prostasia.FLAVORS.IMMUNIZATION],
+        [Prostasia.FLAVORS.EXTERNAL_ARMOR, Prostasia.FLAVORS.DATA_SECURITY, Prostasia.FLAVORS.LOCKBOX, Prostasia.FLAVORS.ARCHITECTURE],
+        [Prostasia.FLAVORS.MENTAL_SHIELD, Prostasia.FLAVORS.MORPHIC_SHIELD, Prostasia.FLAVORS.OCCULT_SHIELD],
+        [Prostasia.FLAVORS.DIMENSIONAL_SHIELD],
+        [Prostasia.FLAVORS.IMPENETRABOX]
     ];
 
     public static readonly QUIRK_TEMPLATES: QuirkTemplate[] = [

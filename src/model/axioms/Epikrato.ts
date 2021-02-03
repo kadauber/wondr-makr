@@ -1,16 +1,37 @@
 import Axiom, { FlavorList } from "../Axiom";
+import Flavor from "../Flavor";
 import QuirkTemplate, { QuirkTemplateOption } from "../QuirkTemplate";
 
 class Epikrato extends Axiom {
     public static readonly ID = "epi";
     public static readonly DISPLAY_NAME = "Epikrato";
 
+    public static readonly FLAVORS = {
+        CONTROLLER: Flavor.createFlavor("controller", "Controller"),
+        FORCE_CONTROLLER: Flavor.createFlavor("forcecontroller", "Force Controller"),
+        MIND_CONTROLLER: Flavor.createFlavor("mindcontroller", "Mind Controller"),
+        WEALTH_CONTROLLER: Flavor.createFlavor("wealthcontroller", "Wealth and the Market Controller"),
+        CROWD_CONTROLLER: Flavor.createFlavor("crowdcontroller", "Crowd Controller"),
+        MOVEMENT_CONTROLLER: Flavor.createFlavor("movementcontroller", "Mover of People and Things"),
+        POLITICAL_CONTROLLER: Flavor.createFlavor("politicalcontroller", "Political Dominator"),
+        WEATHER_CONTROLLER: Flavor.createFlavor("weathercontroller", "Weather Controller"),
+        PROBABILITY_CONTROLLER: Flavor.createFlavor("probabilitycontroller", "Probability Manipulator"),
+        IDENTITY_CONTROLLER: Flavor.createFlavor("identitycontroller", "Identity Controller")
+    }
+
     public static readonly FLAVOR_LIST: FlavorList = [
-        ["Object Controller"],
-        ["Force Controller"],
-        ["Mind Controller"],
-        ["Wealth and the Market Controller", "Crowd Controller", "Mover of People and Things", "Political Dominator", "Weather Controller", "Probability Manipulator"],
-        ["Identity Controller"]
+        [Epikrato.FLAVORS.CONTROLLER],
+        [Epikrato.FLAVORS.FORCE_CONTROLLER],
+        [Epikrato.FLAVORS.MIND_CONTROLLER],
+        [
+            Epikrato.FLAVORS.WEALTH_CONTROLLER,
+            Epikrato.FLAVORS.CROWD_CONTROLLER,
+            Epikrato.FLAVORS.MOVEMENT_CONTROLLER,
+            Epikrato.FLAVORS.POLITICAL_CONTROLLER,
+            Epikrato.FLAVORS.WEATHER_CONTROLLER,
+            Epikrato.FLAVORS.PROBABILITY_CONTROLLER
+        ],
+        [Epikrato.FLAVORS.IDENTITY_CONTROLLER]
     ];
 
     public static readonly QUIRK_TEMPLATES: QuirkTemplate[] = [

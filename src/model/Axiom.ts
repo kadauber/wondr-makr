@@ -1,6 +1,7 @@
+import Flavor from "./Flavor";
 import QuirkTemplate from "./QuirkTemplate";
 
-export type FlavorList = [string[], string[], string[], string[], string[]];
+export type FlavorList = [Flavor[], Flavor[], Flavor[], Flavor[], Flavor[]];
 
 abstract class Axiom {
     public readonly id: string;
@@ -19,7 +20,7 @@ abstract class Axiom {
      * Get the flavors a wonder can be based on its rank.
      * @param rank The one-indexed rank of the wonder
      */
-    public getFlavors(rank: number): string[] {
+    public getFlavors(rank: number): Flavor[] {
         return this.flavors[rank - 1];
     }
 }

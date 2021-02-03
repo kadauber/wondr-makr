@@ -1,16 +1,33 @@
 import Axiom, { FlavorList } from "../Axiom";
+import Flavor from "../Flavor";
 import QuirkTemplate, { QuirkTemplateOption } from "../QuirkTemplate";
 
 class Skafoi extends Axiom {
-    public static readonly ID = "epi";
+    public static readonly ID = "ska";
     public static readonly DISPLAY_NAME = "Skafoi";
 
+    public static readonly FLAVORS = {
+        CAR: Flavor.createFlavor("car", "Car"),
+        BOAT: Flavor.createFlavor("boat", "Boat"),
+        BOUNCER: Flavor.createFlavor("bouncer", "Bouncer"),
+        PLANE: Flavor.createFlavor("plane", "Plane"),
+        SUBMARINE: Flavor.createFlavor("submarine", "Submarine"),
+        MOLE_MACHINE: Flavor.createFlavor("molemachine", "Mole Machine"),
+        SPACESHIP: Flavor.createFlavor("spaceship", "Spaceship"),
+        SUPER_SUBMARINE: Flavor.createFlavor("supersubmarine", "Super-submarine"),
+        TELEPORTER: Flavor.createFlavor("teleporter", "Teleporter"),
+        LIGHTSPEED_VEHICLE: Flavor.createFlavor("lightspeedvehicle", "Lightspeed Vehicle"),
+        DIMENSIONAL_TRANSPORTER: Flavor.createFlavor("dimensionaltransporter", "Dimensional Transporter"),
+        TEMPORAL_DISTORTOR: Flavor.createFlavor("temporaldistortor", "Temporal Distortor"),
+        TIME_MACHINE: Flavor.createFlavor("timemachine", "Time Machine")
+    }
+
     public static readonly FLAVOR_LIST: FlavorList = [
-        ["Car", "Boat", "Bouncer"],
-        ["Plane", "Submarine", "Mole Machine"],
-        ["Spaceship", "Super-submarine"],
-        ["Teleporter", "Lightspeed Vehicle", "Dimensional Transporter"],
-        ["Temporal Distortor", "Time Machine"]
+        [Skafoi.FLAVORS.CAR, Skafoi.FLAVORS.BOAT, Skafoi.FLAVORS.BOUNCER],
+        [Skafoi.FLAVORS.PLANE, Skafoi.FLAVORS.SUBMARINE, Skafoi.FLAVORS.MOLE_MACHINE],
+        [Skafoi.FLAVORS.SPACESHIP, Skafoi.FLAVORS.SUPER_SUBMARINE],
+        [Skafoi.FLAVORS.TELEPORTER, Skafoi.FLAVORS.LIGHTSPEED_VEHICLE, Skafoi.FLAVORS.DIMENSIONAL_TRANSPORTER],
+        [Skafoi.FLAVORS.TEMPORAL_DISTORTOR, Skafoi.FLAVORS.TIME_MACHINE]
     ];
 
     public static readonly QUIRK_TEMPLATES: QuirkTemplate[] = [

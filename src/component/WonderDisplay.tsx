@@ -35,7 +35,7 @@ function WonderDisplay(props: WondrDisplayProps) {
     return <>
         <h2>{renderWonderName()}</h2>
         {props.wonder.creatorName.length > 0 && <p>Created by {props.wonder.creatorName}</p>}
-        <p className="b">{props.wonder.axiom?.displayName} {props.wonder.rank} {props.wonder.flavor}</p>
+        <p className="b">{props.wonder.axiom?.displayName} {props.wonder.rank} {props.wonder.flavor?.displayName}</p>
         {props.wonder.description && <p>{props.wonder.description.length > 0 ? props.wonder.description : <em>All about my wonder...</em>}</p>}
         <dl>
             <div className="mb1 b"><dt className="dib">Core Modifier: </dt><dd className="dib ml1">{renderCoreModifier()}</dd></div>

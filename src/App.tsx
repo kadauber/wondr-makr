@@ -6,6 +6,7 @@ import WonderDisplay from './component/WonderDisplay';
 import WonderQuirksForm from './component/WonderUniversalQuirksForm';
 import Axiom from './model/Axiom';
 import BaseQuirk from './model/BaseQuirk';
+import Flavor from './model/Flavor';
 import PeculiarRequirementQuirk from './model/PeculiarRequirementQuirk';
 import Quirky from './model/Quirky';
 import Wonder from './model/Wonder';
@@ -21,7 +22,7 @@ function App() {
         <div className="pa2 bg-near-white mw7 shadow-1 flex-grow-1">
           <h2>1. Describe Wonder</h2>
           <WonderBasicPropertiesForm
-            onSave={(newName: string, newCreatorName: string, newDescription: string, newAxiom: Axiom, newRank: number, newFlavor: string) => {
+            onSave={(newName: string, newCreatorName: string, newDescription: string, newAxiom: Axiom, newRank: number, newFlavor: Flavor) => {
               setWonder(wonder.updateBasicProperties(newName, newCreatorName, newDescription, newAxiom, newRank, newFlavor));
             }} />
 

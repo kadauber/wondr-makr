@@ -1,6 +1,7 @@
 import Utils from "../Utils";
 import Axiom from "./Axiom";
 import BaseQuirk from "./BaseQuirk";
+import Flavor from "./Flavor";
 import QuirkTemplate from "./QuirkTemplate";
 import Quirky from "./Quirky";
 
@@ -11,11 +12,11 @@ class Wonder {
     private _sizeQuirk: BaseQuirk;
     private _axiom?: Axiom;
     private _rank?: number;
-    private _flavor?: string;
+    private _flavor?: Flavor;
     private _additionalQuirks?: Set<Quirky>;
     private _axiomQuirks?: Set<Quirky>;
 
-    private constructor(wonderName: string, creatorName: string, description: string, sizeQuirk: BaseQuirk, axiom?: Axiom, rank?: number, flavor?: string, additionalQuirks?: Set<Quirky>, axiomQuirks?: Set<Quirky>) {
+    private constructor(wonderName: string, creatorName: string, description: string, sizeQuirk: BaseQuirk, axiom?: Axiom, rank?: number, flavor?: Flavor, additionalQuirks?: Set<Quirky>, axiomQuirks?: Set<Quirky>) {
         this._wonderName = wonderName;
         this._creatorName = creatorName;
         this._description = description;
@@ -91,7 +92,7 @@ class Wonder {
         return this._rank;
     }
 
-    public get flavor(): string | undefined {
+    public get flavor(): Flavor | undefined {
         return this._flavor;
     }
 
@@ -123,7 +124,7 @@ class Wonder {
      * @param newRank 
      * @param newFlavor 
      */
-    public updateBasicProperties(newName: string, newCreatorName: string, newDescription: string, newAxiom?: Axiom, newRank?: number, newFlavor?: string): Wonder {
+    public updateBasicProperties(newName: string, newCreatorName: string, newDescription: string, newAxiom?: Axiom, newRank?: number, newFlavor?: Flavor): Wonder {
         const newWonder = this.cloneWonder();
         newWonder._wonderName = newName;
         newWonder._creatorName = newCreatorName;

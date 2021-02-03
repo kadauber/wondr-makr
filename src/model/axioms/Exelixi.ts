@@ -1,16 +1,27 @@
 import Axiom, { FlavorList } from "../Axiom";
+import Flavor from "../Flavor";
 import QuirkTemplate, { QuirkTemplateOption } from "../QuirkTemplate";
 
 class Exelixi extends Axiom {
     public static readonly ID = "exe";
     public static readonly DISPLAY_NAME = "Exelixi";
 
+    public static readonly FLAVORS = {
+        HEALER: Flavor.createFlavor("healer", "Basic Repair, Healing, and Curing"),
+        LIFE_SUPPORT: Flavor.createFlavor("lifesupport", "Life Support"),
+        MECHANICAL_UPGRADE: Flavor.createFlavor("mechanicalupgrade", "Mechanical Upgrade"),
+        BIOLOGICAL_UPGRADE: Flavor.createFlavor("biologicalupgrade", "Biological Upgrade"),
+        REGENERATOR: Flavor.createFlavor("regenerator", "Regenerator"),
+        REPLACEMENT_LIMB: Flavor.createFlavor("replacementlimb", "Replacement Limb"),
+        RESURRECTER: Flavor.createFlavor("resurrecter", "Resurrecter and Life Extender")
+    }
+
     public static readonly FLAVOR_LIST: FlavorList = [
-        ["Basic Repair, Healing, and Curing", "Life Support"],
-        ["Mechanical Upgrade"],
-        ["Biological Upgrade"],
-        ["Regenerator", "Replacement Limb"],
-        ["Resurrecter and Life Extender"]
+        [Exelixi.FLAVORS.HEALER, Exelixi.FLAVORS.LIFE_SUPPORT],
+        [Exelixi.FLAVORS.MECHANICAL_UPGRADE],
+        [Exelixi.FLAVORS.BIOLOGICAL_UPGRADE],
+        [Exelixi.FLAVORS.REGENERATOR, Exelixi.FLAVORS.REPLACEMENT_LIMB],
+        [Exelixi.FLAVORS.RESURRECTER]
     ];
 
     public static readonly QUIRK_TEMPLATES: QuirkTemplate[] = [

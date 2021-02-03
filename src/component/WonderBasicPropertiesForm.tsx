@@ -10,10 +10,11 @@ import Katastrofi from '../model/axioms/Katastrofi';
 import Metaptropi from '../model/axioms/Metaptropi';
 import Prostasia from '../model/axioms/Prostasia';
 import Skafoi from '../model/axioms/Skafoi';
+import Flavor from '../model/Flavor';
 
 interface WonderBasicPropertiesFormProps {
     className?: string;
-    onSave: (newName: string, creatorName: string, newDescription: string, newAxiom: Axiom, newRank: number, newFlavor: string) => void;
+    onSave: (newName: string, creatorName: string, newDescription: string, newAxiom: Axiom, newRank: number, newFlavor: Flavor) => void;
 }
 
 function WonderBasicPropertiesForm(props: WonderBasicPropertiesFormProps) {
@@ -29,13 +30,17 @@ function WonderBasicPropertiesForm(props: WonderBasicPropertiesFormProps) {
         Skafoi.create()
     ];
 
+    const DEFAULT_AXIOM = axioms[0];
+    const DEFAULT_RANK = 1;
+    const DEFAULT_FLAVOR = DEFAULT_AXIOM.getFlavors(DEFAULT_RANK)[0];
+
     // Form state
     const [wonderNameDraft, setWonderNameDraft] = useState("");
     const [creatorNameDraft, setCreatorNameDraft] = useState("");
     const [wonderDescriptionDraft, setWonderDescriptionDraft] = useState("");
-    const [selectedAxiomDraft, setSelectedAxiomDraft] = useState(axioms[0]);
-    const [selectedRankDraft, setSelectedRankDraft] = useState(1);
-    const [selectedFlavorDraft, setSelectedFlavorDraft] = useState("");
+    const [selectedAxiomDraft, setSelectedAxiomDraft] = useState(DEFAULT_AXIOM);
+    const [selectedRankDraft, setSelectedRankDraft] = useState(DEFAULT_RANK);
+    const [selectedFlavorDraft, setSelectedFlavorDraft] = useState(DEFAULT_FLAVOR);
 
     // Reset flavor when axiom or rank draft changes
     useEffect(() => {
@@ -47,15 +52,21 @@ function WonderBasicPropertiesForm(props: WonderBasicPropertiesFormProps) {
         const flavors = selectedAxiomDraft.getFlavors(selectedRankDraft);
 
         if (flavors.length < 2) {
-            return <div className="h2 mb3 flex items-center">{flavors[0]}</div>;
+            return <div className="h2 mb3 flex items-center">{flavors[0].displayName}</div>;
         }
 
         return <select
             id="wonder-flavor"
             className="h2 db mb3"
-            onChange={(e) => setSelectedFlavorDraft(e.target.value)}>
+            value={selectedFlavorDraft?.id}
+            onChange={(e) => {
+                const newFlavor = selectedAxiomDraft.getFlavors(selectedRankDraft).find(flavor => flavor.id === e.target.value);
+                if (newFlavor !== undefined) {
+                    setSelectedFlavorDraft(newFlavor);
+                }
+            }}>
             {flavors.map((val, i) =>
-                <option key={i} value={val}>{val}</option>
+                <option key={i} value={val.id}>{val.displayName}</option>
             )}
         </select>
     }

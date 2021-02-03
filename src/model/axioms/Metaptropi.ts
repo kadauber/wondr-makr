@@ -1,16 +1,26 @@
 import Axiom, { FlavorList } from "../Axiom";
+import Flavor from "../Flavor";
 import QuirkTemplate, { QuirkTemplateOption } from "../QuirkTemplate";
 
 class Metaptropi extends Axiom {
     public static readonly ID = "met";
     public static readonly DISPLAY_NAME = "Metaptropi";
 
+    public static readonly FLAVORS = {
+        APPEARANCE_CHANGER: Flavor.createFlavor("appearancechanger", "Appearance Changer"),
+        SUBSTANCE_CHANGER: Flavor.createFlavor("substancechanger", "Substance Changer"),
+        ILLUSION_GENERATOR: Flavor.createFlavor("illusiongenerator", "Illusion Generator"),
+        SIZE_CHANGER: Flavor.createFlavor("sizechanger", "Grower / Shrinker"),
+        SHAPE_CHANGER: Flavor.createFlavor("shapechanger", "Shape Changer"),
+        IRRATIONAL_TRANSFORMER: Flavor.createFlavor("irrationaltransformer", "Irrational Transformer")
+    }
+
     public static readonly FLAVOR_LIST: FlavorList = [
-        ["Appearance Changer"],
-        ["Substance Changer", "Illusion Generator"],
-        ["Grower / Shrinker"],
-        ["Shape Changer"],
-        ["Irrational Transformer"]
+        [Metaptropi.FLAVORS.APPEARANCE_CHANGER],
+        [Metaptropi.FLAVORS.SUBSTANCE_CHANGER, Metaptropi.FLAVORS.ILLUSION_GENERATOR],
+        [Metaptropi.FLAVORS.SIZE_CHANGER],
+        [Metaptropi.FLAVORS.SHAPE_CHANGER],
+        [Metaptropi.FLAVORS.IRRATIONAL_TRANSFORMER]
     ];
 
     public static readonly QUIRK_TEMPLATES: QuirkTemplate[] = [

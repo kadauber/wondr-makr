@@ -1,16 +1,31 @@
 import Axiom, { FlavorList } from "../Axiom";
+import Flavor from "../Flavor";
 import QuirkTemplate from "../QuirkTemplate";
 
 class Apocalypsi extends Axiom {
     public static readonly ID = "apo";
     public static readonly DISPLAY_NAME = "Apocalypsi";
 
+    public static readonly FLAVORS = {
+        SCANNER_COMMUNICATOR: Flavor.createFlavor("scanner", "Scanner / Communicator"),
+        DIRECT_SCANNER: Flavor.createFlavor("directscanner", "Direct Scanner"),
+        MIND_READER: Flavor.createFlavor("mindreader", "Mind Reader"),
+        TELEPATHY_DEVICE: Flavor.createFlavor("telepathy", "Telepathy Device"),
+        UNIVERSAL_TRANSLATOR: Flavor.createFlavor("universaltranslator", "Universal Translator"),
+        AREA_SCANNER: Flavor.createFlavor("areascanner", "Area Scanner"),
+        AREA_MENTAL_SCANNER: Flavor.createFlavor("areamentalscanner", "Area Mental Scanner"),
+        POSSIBILITY_PROBABILITY: Flavor.createFlavor("possibilityprobability", "Possibility / Probability"),
+        EXTRADIMENSIONAL_SCANNER: Flavor.createFlavor("extradimensionalscanner", "Extradimensional Scanner"),
+        EXTRADIMENSIONAL_COMMUNICATOR: Flavor.createFlavor("extradimensionalcommunicator", "Extradimensional Communicator"),
+        EVERYTHING_DETECTOR: Flavor.createFlavor("everythingdetector", "Everything Detector")
+    }
+
     public static readonly FLAVOR_LIST: FlavorList = [
-        ["Scanner / Communicator"],
-        ["Direct Scanner", "Mind Reader", "Telepathy Device", "Universal Translator"],
-        ["Area Scanner", "Area Mental Scanner",],
-        ["Possibility / Probability", "Extradimensional Scanner", "Extradimensional Communicator"],
-        ["Everything Detector"]
+        [Apocalypsi.FLAVORS.SCANNER_COMMUNICATOR],
+        [Apocalypsi.FLAVORS.DIRECT_SCANNER, Apocalypsi.FLAVORS.MIND_READER, Apocalypsi.FLAVORS.TELEPATHY_DEVICE, Apocalypsi.FLAVORS.UNIVERSAL_TRANSLATOR],
+        [Apocalypsi.FLAVORS.AREA_SCANNER, Apocalypsi.FLAVORS.AREA_MENTAL_SCANNER],
+        [Apocalypsi.FLAVORS.POSSIBILITY_PROBABILITY, Apocalypsi.FLAVORS.EXTRADIMENSIONAL_SCANNER, Apocalypsi.FLAVORS.EXTRADIMENSIONAL_COMMUNICATOR],
+        [Apocalypsi.FLAVORS.EVERYTHING_DETECTOR]
     ];
 
     public static readonly QUIRK_TEMPLATES: QuirkTemplate[] = [
