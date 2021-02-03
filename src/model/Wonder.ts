@@ -43,6 +43,46 @@ class Wonder {
         return this._sizeQuirk;
     }
 
+    public get size(): number | undefined {
+        const sizeInput = this._sizeQuirk.getCustomNumberValue("sizeinput");
+        return sizeInput === undefined ? undefined : parseInt(sizeInput);
+    }
+
+    public get durability(): number | undefined {
+        let isFragile = false;
+        if (this._additionalQuirks !== undefined) {
+            Array.from(this._additionalQuirks).some((quirk: Quirky) => {
+                if ("template" in quirk) {
+                    isFragile = (quirk as BaseQuirk).getTemplateID() === QuirkTemplate.FRAGILE.id;
+                }
+            });
+        }
+
+        if (this.size === undefined) {
+            return undefined;
+        } else if (isFragile || this.size === 0) {
+            return 0;
+        } else if (this.size <= 2) {
+            return 1;
+        } else if (this.size <= 8) {
+            return 2;
+        } else if (this.size <= 15) {
+            return 3;
+        } else if (this.size <= 25) {
+            return 4;
+        } else {
+            return 5;
+        }
+    }
+
+    public get structure(): number | undefined {
+        if (this.size === undefined || this.durability === undefined) {
+            return undefined;
+        } else {
+            return this.size + this.durability;
+        }
+    }
+
     public get axiom(): Axiom | undefined {
         return this._axiom;
     }
@@ -130,6 +170,51 @@ class Wonder {
 
         return coreModifier;
     }
+
+    /**
+     * Calculate how long it will take to build the wonder.
+     */
+    public getTimeToBuild(): string {
+        if (this.size === undefined) {
+            return "Unknown time";
+        }
+
+        const timeSteps = [
+            "One Turn",
+            "One Minute",
+            "One Hour",
+            "One Day",
+            "One Week",
+            "One Month",
+            "One Year",
+            "One Decade",
+            "One Century",
+            "One Millennium",
+            "10,000 Years",
+            "100,000 Years",
+            "1 Million Years"
+        ];
+
+        let baseTimeStep: number = 3;
+        if (this.size <= 5) {
+            baseTimeStep = 3;
+        } else if (this.size <= 10) {
+            baseTimeStep = 4;
+        } else if (this.size <= 15) {
+            baseTimeStep = 5;
+        } else if (this.size <= 20) {
+            baseTimeStep = 6;
+        } else if (this.size <= 25) {
+            baseTimeStep = 7;
+        } else if (this.size <= 30) {
+            baseTimeStep = 8;
+        } else {
+            baseTimeStep = 9;
+        }
+
+        return timeSteps[baseTimeStep]
+    }
+
 }
 
 export default Wonder;

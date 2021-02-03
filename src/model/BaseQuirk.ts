@@ -126,6 +126,10 @@ class BaseQuirk implements Quirky {
     const value = this.customNumberInputValues?.get(inputID)
     return value === undefined ? value : value.toString();
   }
+
+  public getTemplateID(): string {
+    return this.template.id;
+  }
 }
 
 export default BaseQuirk;
