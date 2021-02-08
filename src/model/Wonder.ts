@@ -28,6 +28,33 @@ class Wonder {
         this._axiomQuirks = new Set(axiomQuirks);
     }
 
+    private getQuirkFromSetByTemplateID(templateID: string, quirkSet: Set<Quirky>): Quirky | undefined {
+        for (const quirk of Array.from(quirkSet)) {
+            if ("template" in quirk && (quirk as BaseQuirk).getTemplateID() === templateID) {
+                return quirk;
+            }
+        }
+        return undefined;
+    }
+
+    private getQuirkByTemplateID(templateID: string): Quirky | undefined {
+        if (this._additionalQuirks !== undefined) {
+            const additionalQuirk = this.getQuirkFromSetByTemplateID(templateID, this._additionalQuirks);
+            if (additionalQuirk !== undefined) {
+                return additionalQuirk;
+            }
+        }
+
+        if (this._axiomQuirks !== undefined) {
+            const axiomQuirk = this.getQuirkFromSetByTemplateID(templateID, this._axiomQuirks);
+            if (axiomQuirk !== undefined) {
+                return axiomQuirk;
+            }
+        }
+
+        return undefined;
+    }
+
     public get wonderName(): string {
         return this._wonderName;
     }
@@ -50,14 +77,7 @@ class Wonder {
     }
 
     public get durability(): number | undefined {
-        let isFragile = false;
-        if (this._additionalQuirks !== undefined) {
-            Array.from(this._additionalQuirks).some((quirk: Quirky) => {
-                if ("template" in quirk) {
-                    isFragile = (quirk as BaseQuirk).getTemplateID() === QuirkTemplate.FRAGILE.id;
-                }
-            });
-        }
+        const isFragile = this.getQuirkByTemplateID(QuirkTemplate.FRAGILE.id) !== undefined;
 
         if (this.size === undefined) {
             return undefined;
